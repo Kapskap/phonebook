@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AddController extends AbstractController
 {
+    //dodawanie 1 przykładowego rekordu do bazy Phones
     #[Route('/add', name: 'add_contact')]
     public function createPhones(EntityManagerInterface $entityManager): Response
     {
