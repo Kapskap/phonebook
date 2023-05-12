@@ -17,8 +17,8 @@ class AddController extends AbstractController
         $phone = new Phones();
         $phone->setNumber('+48 123 456 789');
         $phone->setCompany('Biuro Podrozy Slask');
-        $data=date("Y-m-d");
-        $phone->setData(\DateTime::createFromFormat('Y-m-d', $data));
+        //$data=date("Y-m-d");
+        //$phone->setData(\DateTime::createFromFormat('Y-m-d', $data));
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
         $entityManager->persist($phone);

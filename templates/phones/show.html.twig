@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <table border=1><tr><th style= "background-color: #FFC000;">Firma</th><th style= "background-color: #FFC000;">Telefon</th>
+    {% for dan in dane %}
+        <tr>
+        {% if dan.id%2==0 %}
+            <td style= "background-color: white;">Firma: {{ dan.company }}</td>
+            <td style= "background-color: white;"><strong>Telefon: {{ dan.number }}</strong></td></tr>
+        {% else %}
+            <td style= "background-color: #FFF2CC;">Firma: {{ dan.company }}</td>
+            <td style= "background-color: #FFF2CC;"><strong>Telefon: {{ dan.number }}</strong></td></tr>
+        {% endif %}           
+    {% endfor %}
+    </table>
+ {% endblock %}

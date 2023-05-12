@@ -27,7 +27,12 @@ class Phones
     private ?string $Lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $Data = null;
+    private ?\DateTimeInterface $Data;
+
+    public function __construct()
+    {
+        $this->Data = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
