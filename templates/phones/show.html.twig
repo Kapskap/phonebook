@@ -4,11 +4,11 @@
     {% for dan in dane %}
         <tr>
         {% if dan.id%2==0 %}
-            <td style= "background-color: white;">Firma: {{ dan.company }}</td>
-            <td style= "background-color: white;"><strong>Telefon: {{ dan.number }}</strong></td></tr>
+            <td style= "background-color: white;"> {{ dan.company }}</td>
+            <td style= "background-color: white;"><strong>{{ dan.number }}</strong></td></tr>
         {% else %}
-            <td style= "background-color: #FFF2CC;">Firma: {{ dan.company }}</td>
-            <td style= "background-color: #FFF2CC;"><strong>Telefon: {{ dan.number }}</strong></td></tr>
+            <td style= "background-color: #FFF2CC;"> {{ dan.company }}</td>
+            <td style= "background-color: #FFF2CC;"><strong> {{ dan.number }}</strong></td></tr>
         {% endif %}           
     {% endfor %}
     </table>
