@@ -1,15 +1,12 @@
 {% extends 'base.html.twig' %}
+{% block title %}
+| show {{phone.id}}
+{% endblock %}
 {% block body %}
-    <table border=1><tr><th style= "background-color: #FFC000;">Firma</th><th style= "background-color: #FFC000;">Telefon</th>
-    {% for dan in dane %}
-        <tr>
-        {% if dan.id%2==0 %}
-            <td style= "background-color: white;"> {{ dan.company }}</td>
-            <td style= "background-color: white;"><strong>{{ dan.number }}</strong></td></tr>
-        {% else %}
-            <td style= "background-color: #FFF2CC;"> {{ dan.company }}</td>
-            <td style= "background-color: #FFF2CC;"><strong> {{ dan.number }}</strong></td></tr>
-        {% endif %}           
-    {% endfor %}
-    </table>
- {% endblock %}
+ <h3>Firma: {{ phone.company }}</h3>
+ <h4 style="margin-left: 100px">nr: {{ phone.number }}</h4>
+ {#}
+ <a href="{{ path('del_phones', {id: phone.id }) }}">Usuń dane</a><br>
+ <a href="{{ path('browse_phones', {id: phone.id }) }}">Zmień dane</a><br>
+ #}
+{% endblock %}

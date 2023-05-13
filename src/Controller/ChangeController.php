@@ -30,22 +30,38 @@ class ChangeController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit_contact')]
-    public function update(EntityManagerInterface $entityManager, int $id): Response
+    public function updatePhones(EntityManagerInterface $entityManager, int $id): Response
     {
-        $dane = $entityManager->getRepository(Phones::class)->find($id);
+        $phone = $entityManager->getRepository(Phones::class)->find($id);
 
-        if (!$dane) {
+        if (!$phone) {
             throw $this->createNotFoundException(
                 'Nie znaleziono id '.$id
             );
         }
-
-        $dane->setCompany('Nowa Firma');
+        $phone->setCompany('Nowa Firma');
+        $phone->setNumber('+48 000 000 000');
         $entityManager->flush();
 
         return $this->redirectToRoute('show_phones', [
-            'id' => $dane->getId()
+            'id' => $phone->getId()
         ]);
+    }
+
+    #[Route('/del/{id}', name: 'del_contact')]
+    public function deletePhones(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $phone = $entityManager->getRepository(Phones::class)->find($id);
+
+        if (!$phone) {
+            throw $this->createNotFoundException(
+                'Nie znaleziono id '.$id
+            );
+        }
+        $entityManager->remove($phone);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('browse_phones');
     }
 }
 ?>
