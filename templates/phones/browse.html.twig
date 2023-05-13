@@ -3,23 +3,23 @@
 | browse
 {% endblock %}
 {% block body %}
-    <table border=1><tr><th style= "background-color: #FFC000;">Firma</th><th style= "background-color: #FFC000;">Telefon</th>
+    <table border=1><tr><th>Firma</th><th>Telefon</th>
     {% for phone in phones %}
         <tr>
         {% if phone.id%2==0 %}
-            <td style= "background-color: white;"> 
+            <td class="white"> 
                 <a href="{{ path('show_phones', {id: phone.id }) }}">
                     {{ phone.company }}
                 </a>
             </td>
-            <td style= "background-color: white;">
+            <td class="white"> 
             <strong><a href="{{ path('show_phones', {id: phone.id }) }}">
                         {{ phone.number }}
                     </a></strong>
             </td></tr>
         {% else %}
-            <td style= "background-color: #FFF2CC;"> {{ phone.company }}</td>
-            <td style= "background-color: #FFF2CC;"><strong> {{ phone.number }}</strong></td></tr>
+            <td class="yellow">  {{ phone.company }}</td>
+            <td class="yellow"> <strong> {{ phone.number }}</strong></td></tr>
            
         {% endif %}           
     {% endfor %}
