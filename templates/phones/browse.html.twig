@@ -3,10 +3,11 @@
 | browse
 {% endblock %}
 {% block body %}
+
     <table border=1><tr><th>Firma</th><th>Telefon</th>
-    {% for phone in phones %}
+    {% for key, phone in phones %}
         <tr>
-        {% if phone.id%2==0 %}
+        {% if key is odd %}
             <td class="white"> 
                 <a href="{{ path('show_phones', {id: phone.id }) }}">
                     {{ phone.company }}
@@ -24,4 +25,6 @@
         {% endif %}           
     {% endfor %}
     </table>
+
+
  {% endblock %}
