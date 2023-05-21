@@ -3,10 +3,13 @@
 | show {{phone.id}}
 {% endblock %}
 {% block body %}
+
  <h3>Firma: {{ phone.company }}</h3>
- <h4 style="margin-left: 100px">nr: {{ phone.number }}</h4>
- {#}
- <a href="{{ path('del_phones', {id: phone.id }) }}">Usuń dane</a><br>
- <a href="{{ path('browse_phones', {id: phone.id }) }}">Zmień dane</a><br>
- #}
+ <h4>nr: {{ phone.number }}</h4>
+ <h4>Imię: {{phone.firstname}} Nazwisko: {{phone.lastname}}</h4>
+ <h4>Wpis utworzono: {{data}}</h4>
+ 
+ <a href="{{ path('del_phones', {id: phone.id }) }}">Usuń dane </a>
+ <a href="{{ path('edit_phones', {id: phone.id }) }}">Edytuj dane</a><br>
+ 
 {% endblock %}

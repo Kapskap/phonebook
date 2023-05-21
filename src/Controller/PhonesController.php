@@ -40,7 +40,9 @@ class PhonesController extends AbstractController
         if (!$phone) {
             throw $this->createNotFoundException('Nie znaleziono id '.$id);
             }
-        return $this->render('phones/show.html.twig', ['phone'=>$phone]);
+       $data=$phone->GetData()->format('Y-m-d');
+        //dd($data);    
+        return $this->render('phones/show.html.twig', ['phone'=>$phone, 'data'=>$data]);
     }
 
 

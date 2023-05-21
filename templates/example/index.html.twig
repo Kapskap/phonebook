@@ -1,0 +1,11 @@
+{# templates/example/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Prosty formularz</h2>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

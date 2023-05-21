@@ -3,28 +3,14 @@
 | browse
 {% endblock %}
 {% block body %}
-
-    <table border=1><tr><th>Firma</th><th>Telefon</th>
     {% for key, phone in phones %}
-        <tr>
         {% if key is odd %}
-            <td class="white"> 
-                <a href="{{ path('show_phones', {id: phone.id }) }}">
-                    {{ phone.company }}
-                </a>
-            </td>
-            <td class="white"> 
-            <strong><a href="{{ path('show_phones', {id: phone.id }) }}">
-                        {{ phone.number }}
-                    </a></strong>
-            </td></tr>
+            <div class="gray"> 
         {% else %}
-            <td class="yellow">  {{ phone.company }}</td>
-            <td class="yellow"> <strong> {{ phone.number }}</strong></td></tr>
-           
-        {% endif %}           
+            <div class="white">
+        {% endif %}  
+        <a href="{{ path('show_phones', {id: phone.id }) }}">
+            {{ phone.company }} <strong>{{ phone.number }} </strong>
+        </a></div><br>  
     {% endfor %}
-    </table>
-
-
  {% endblock %}

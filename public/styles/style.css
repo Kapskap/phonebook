@@ -7,6 +7,32 @@ h1{
     color: whitesmoke;
     padding: 10px 0 10px 50px;
 }
+h4{
+    margin-left: 100px;
+}
+div.gray{
+    margin-left: 100px;
+    width: 400px;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: rgb(160, 159, 150);
+}
+div.white{
+    margin-left: 70px;
+    width: 400px;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: rgb(186, 186, 135);
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    text-decoration: solid;
+}
+
+
 th{
     background-color: #FFC000;
 }

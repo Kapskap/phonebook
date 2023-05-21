@@ -29,7 +29,7 @@ class ChangeController extends AbstractController
         return new Response('Dodano nowy produkt o  id = '.$phone->getId());
     }
 
-    #[Route('/edit/{id}', name: 'edit_contact')]
+    #[Route('/edit/{id}', name: 'edit_phones')]
     public function updatePhones(EntityManagerInterface $entityManager, int $id): Response
     {
         $phone = $entityManager->getRepository(Phones::class)->find($id);
@@ -48,7 +48,7 @@ class ChangeController extends AbstractController
         ]);
     }
 
-    #[Route('/del/{id}', name: 'del_contact')]
+    #[Route('/del/{id}', name: 'del_phones')]
     public function deletePhones(EntityManagerInterface $entityManager, int $id): Response
     {
         $phone = $entityManager->getRepository(Phones::class)->find($id);
