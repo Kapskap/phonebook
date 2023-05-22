@@ -1,5 +1,4 @@
 <?php
-// src/Form/ExampleFormType.php
 
 namespace App\Form;
 
@@ -9,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ExampleFormType extends AbstractType
+class AddFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

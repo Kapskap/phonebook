@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\ExampleFormType;
+use App\Form\AddFormType;
 
 class ExampleController extends AbstractController
 {
@@ -17,7 +17,7 @@ class ExampleController extends AbstractController
      */
     public function example(Request $request): Response
     {
-        $form = $this->createForm(ExampleFormType::class);
+        $form = $this->createForm(AddFormType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -25,9 +25,6 @@ class ExampleController extends AbstractController
 
             // Możesz uzyskać dostęp do danych formularza za pomocą $form->getData()
             // Przykładowo: $formData = $form->getData();
-
-            $formData = $form->getData();
-            dd($formData);
 
             // Wykonaj dowolne działania na danych formularza, np. zapisz je w bazie danych
 

@@ -7,26 +7,39 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use App\Form\AddFormType;
 
 class ChangeController extends AbstractController
 {
     //dodawanie 1 przykładowego rekordu do bazy Phones
-    #[Route('/add', name: 'add_contact')]
-    public function createPhones(EntityManagerInterface $entityManager): Response
+    #[Route('/add', name: 'add_phones')]
+    public function createPhones(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $phone = new Phones();
-        $phone->setNumber('+48 111 222 333');
-        $phone->setCompany('Biuro Podrozy XX');
-        //$data=date("Y-m-d");
-        //$phone->setData(\DateTime::createFromFormat('Y-m-d', $data));
+        //tworzenie formularza
+        $form = $this->createForm(AddFormType::class);
 
-        // tell Doctrine you want to (eventually) save the Product (no queries yet)
-        $entityManager->persist($phone);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //pobieranie danych z formularza
+            $formData = $form->getData();
+            $number=$formData['phonenumber'];
+            $company=$formData['company'];
 
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
+            //dodawanie rekordów do bazy
+            $phone = new Phones();
+            $phone->setNumber($number);
+            $phone->setCompany($company);
+            $entityManager->persist($phone);
+            $entityManager->flush();
 
-        return new Response('Dodano nowy produkt o  id = '.$phone->getId());
+            return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
+        }
+
+        return $this->render('example/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
     }
 
     #[Route('/edit/{id}', name: 'edit_phones')]
