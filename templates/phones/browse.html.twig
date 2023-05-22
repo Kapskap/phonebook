@@ -3,6 +3,9 @@
 | browse
 {% endblock %}
 {% block body %}
+    <div class="content">
+        Aby uzyskać bardziej szczegółowe informacje kliknij wybraną pozycję
+    </div>    
     {% for key, phone in phones %}
         {% if key is odd %}
             <div class="gray"> 
@@ -13,4 +16,8 @@
             {{ phone.company }} <strong>{{ phone.number }} </strong>
         </a></div><br>  
     {% endfor %}
+    <div class="content">
+        Jeśli chcesz powrócić na stronę główną 
+        <a href=/><strong>kliknij tutaj</strong></a>.
+    </div>  
  {% endblock %}

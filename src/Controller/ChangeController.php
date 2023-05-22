@@ -12,7 +12,7 @@ use App\Form\AddFormType;
 
 class ChangeController extends AbstractController
 {
-    //dodawanie 1 przykładowego rekordu do bazy Phones
+    //dodawanie 1 rekordu do bazy Phones przy użyciu formularza
     #[Route('/add', name: 'add_phones')]
     public function createPhones(EntityManagerInterface $entityManager, Request $request): Response
     {
@@ -33,10 +33,14 @@ class ChangeController extends AbstractController
             $entityManager->persist($phone);
             $entityManager->flush();
 
-            return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
+            //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+            $this->addFlash('success', 'Dodano wpis o id: '.$phone->getID());
+
+           // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
+           return $this->redirectToRoute('browse_phones');
         }
 
-        return $this->render('example/index.html.twig', [
+        return $this->render('forms/index.html.twig', [
             'form' => $form->createView(),
         ]);
 
@@ -56,6 +60,9 @@ class ChangeController extends AbstractController
         $phone->setNumber('+48 000 000 000');
         $entityManager->flush();
 
+        //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+        $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
+
         return $this->redirectToRoute('show_phones', [
             'id' => $phone->getId()
         ]);
@@ -73,6 +80,9 @@ class ChangeController extends AbstractController
         }
         $entityManager->remove($phone);
         $entityManager->flush();
+
+        //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+        $this->addFlash('success', 'Usunięto wpis o id: '.$id);
 
         return $this->redirectToRoute('browse_phones');
     }

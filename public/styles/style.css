@@ -24,6 +24,20 @@ div.white{
     border-radius: 5px;
     background-color: rgb(186, 186, 135);
 }
+div.alert-success{
+    font-size: 20px;
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border: solid #badbcc 5px;
+    border-radius: 5px;
+    padding: 3px;
+    margin-bottom: 10px;
+  }
+div.content{
+    margin: 20px;
+    color:rgb(0, 0, 0);
+}
+
 a{
     text-decoration: none;
     color: black;
@@ -31,7 +45,6 @@ a{
 a:hover{
     text-decoration: solid;
 }
-
 
 th{
     background-color: #FFC000;

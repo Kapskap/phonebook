@@ -14,8 +14,22 @@
     </head>
     <body>
         <h1>Książka telefoniczna</h1>
+
+            {% for message in app.flashes('success') %}
+                    <div class="alert-success">
+                        {{ message }}
+                    </div>
+            {% endfor %}
+
         {% block body %}
-            <a href=/browse/>Zobacz wpisy</a>
+        <div class="content">
+        Mam przyjemność zaprezentować Państwu prostą książkę telefoniczną opierającą się na bazie danych.<br>
+        Aby zobaczyć jakie dane występują obecnie w bazie 
+            <a href=/browse/><strong>kliknij tutaj</strong></a>.
+        <br><br>
+        Ewentualnie     
+        <a href=/add/><strong>dodaj nowy kontakt do bazy</strong></a>
+        </div>
         {% endblock %}
     </body>
 </html>

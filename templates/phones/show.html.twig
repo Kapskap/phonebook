@@ -3,13 +3,18 @@
 | show {{phone.id}}
 {% endblock %}
 {% block body %}
-
+ <h2>Oto szczegółowe informacje o wybranym kontakcie:</h2>
  <h3>Firma: {{ phone.company }}</h3>
  <h4>nr: {{ phone.number }}</h4>
  <h4>Imię: {{phone.firstname}} Nazwisko: {{phone.lastname}}</h4>
  <h4>Wpis utworzono: {{data}}</h4>
- 
- <a href="{{ path('del_phones', {id: phone.id }) }}">Usuń dane </a>
- <a href="{{ path('edit_phones', {id: phone.id }) }}">Edytuj dane</a><br>
- 
+ <div class="content">
+    <ul>
+        <li><a href="{{ path('del_phones', {id: phone.id }) }}">Klikij aby usunąc te dane. </a></li>
+        <li><a href="{{ path('edit_phones', {id: phone.id }) }}">Kliknij aby edytować dane</a><br></li>
+
+    </ul>    
+ <br>
+<a href=/browse/><strong>Powrót do przeglądania wpisów</strong></a>
+</div> 
 {% endblock %}
