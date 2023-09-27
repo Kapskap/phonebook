@@ -4,8 +4,11 @@
 
 {% block body %}
     <h2>Wypełnij dane:</h2>
-
+{#}
     {{ form_start(form) }}
         {{ form_widget(form) }}
     {{ form_end(form) }}
+    {#}
+    {{ form(form) }}
+    
 {% endblock %}

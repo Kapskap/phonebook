@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>Phonebook {% block title %}{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" type="text/css" href="styles/style.css" />
+            <link rel="stylesheet" type="text/css" href="/styles/style.css" />
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
@@ -25,10 +25,10 @@
         <div class="content">
         Mam przyjemność zaprezentować Państwu prostą książkę telefoniczną opierającą się na bazie danych.<br>
         Aby zobaczyć jakie dane występują obecnie w bazie 
-            <a href=/browse/><strong>kliknij tutaj</strong></a>.
+            <a href="{{ path('browse_phones') }}"><strong>kliknij tutaj</strong></a>.
         <br><br>
         Ewentualnie     
-        <a href=/add/><strong>dodaj nowy kontakt do bazy</strong></a>
+        <a href="{{ path('add_phones') }}"><strong>dodaj nowy kontakt do bazy</strong></a>
         </div>
         {% endblock %}
     </body>
