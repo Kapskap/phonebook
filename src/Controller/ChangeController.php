@@ -47,8 +47,19 @@ class ChangeController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit_phones')]
-    public function updatePhones(EntityManagerInterface $entityManager, int $id): Response
+    public function updatePhones(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
+//        $phone = $entityManager->getRepository(Phones::class)->find($id);
+//
+//        //tworzenie formularza
+//        $form = $this->createForm(AddFormType::class, $phone);
+//        $form->handleRequest($request);
+//
+//        return $this->render('forms/index.html.twig', [
+//            'form' => $form->createView(),
+//        ]);
+
+        //Wartości pisane "na siłę" zamiast przy uzyciu formularza
         $phone = $entityManager->getRepository(Phones::class)->find($id);
 
         if (!$phone) {
