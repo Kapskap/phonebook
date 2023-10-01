@@ -5,7 +5,7 @@
 {% block body %}
  <h2>Oto szczegółowe informacje o wybranym kontakcie:</h2>
  <h3>Firma: {{ phone.company }}</h3>
- <h4>nr: {{ phone.number }}</h4>
+ <h4>Nr telefonu: {{ phone.number }}</h4>
  <h4>Imię: {{phone.firstname}} Nazwisko: {{phone.lastname}}</h4>
  <h4>Wpis utworzono: {{data}}</h4>
  <div class="content">
@@ -15,6 +15,7 @@
 
     </ul>    
  <br>
-<a href="{{ path('browse_phones') }}"><strong>Powrót do przeglądania wpisów</strong></a>
+     <a href="{{ path('browse_phones') }}"><strong>Powrót do przeglądania wpisów</strong></a><br>
+     <a href="{{ path('home_page') }}"><strong>Powrót na stronę główną.</strong></a>
 </div> 
 {% endblock %}

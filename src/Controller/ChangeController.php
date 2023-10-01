@@ -25,11 +25,15 @@ class ChangeController extends AbstractController
             $formData = $form->getData();
             $number=$formData['phonenumber'];
             $company=$formData['company'];
+            $firstname=$formData['firstname'];
+            $lastname=$formData['lastname'];
 
             //dodawanie rekordów do bazy
             $phone = new Phones();
             $phone->setNumber($number);
             $phone->setCompany($company);
+            if ($firstname!=null) $phone->setFirstname($firstname);
+            if ($lastname!=null) $phone->setLastname($lastname);
             $entityManager->persist($phone);
             $entityManager->flush();
 
