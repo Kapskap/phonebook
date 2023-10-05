@@ -24,11 +24,19 @@ class SearchController extends AbstractController
             $query = $form->get('query')->getData();
 
             // Wykonaj zapytanie do bazy danych na podstawie $query
-            $results = $entityManager->getRepository(Phones::class)->findBy(['id' => $query]);
+            $phones = $entityManager->getRepository(Phones::class)->findBy(['id' => $query]);
+
+            // Wykonywanie zapytania po Company niestety nie zwraca obiektu array
+//            $phones = $entityManager->getRepository(Phones::class)->findOneBy(['Company' => $query]);
+
+            //Wykorzytanie Doctrine Query Language
+            $phones = $entityManager->getRepository(Phones::class)->findAllThanText($query);
+
+//dd($phones);
 
             // Przekaż wyniki do widoku
             return $this->render('search/result.html.twig', [
-                'results' => $results,
+                'phones' => $phones,
             ]);
         }
 

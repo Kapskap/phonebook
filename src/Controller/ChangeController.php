@@ -23,7 +23,7 @@ class ChangeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //pobieranie danych z formularza
             $formData = $form->getData();
-            $number=$formData['phonenumber'];
+            $number=$formData['number'];
             $company=$formData['company'];
             $firstname=$formData['firstname'];
             $lastname=$formData['lastname'];
@@ -54,11 +54,35 @@ class ChangeController extends AbstractController
     public function updatePhones(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
 //        $phone = $entityManager->getRepository(Phones::class)->find($id);
-//
-//        //tworzenie formularza
+//dd($phone);
+        //tworzenie formularza
 //        $form = $this->createForm(AddFormType::class, $phone);
 //        $form->handleRequest($request);
+
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            //pobieranie danych z formularza
+//            $formData = $form->getData();
+//            $number=$formData['number'];
+//            $company=$formData['company'];
+//            $firstname=$formData['firstname'];
+//            $lastname=$formData['lastname'];
 //
+//            //dodawanie rekordów do bazy
+//            $phone = new Phones();
+//            $phone->setNumber($number);
+//            $phone->setCompany($company);
+//            if ($firstname!=null) $phone->setFirstname($firstname);
+//            if ($lastname!=null) $phone->setLastname($lastname);
+//            $entityManager->persist($phone);
+//            $entityManager->flush();
+//
+//            //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+//            $this->addFlash('success', 'Dodano wpis o id: '.$phone->getID());
+//
+//            // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
+//            return $this->redirectToRoute('browse_phones');
+//        }
+
 //        return $this->render('forms/index.html.twig', [
 //            'form' => $form->createView(),
 //        ]);

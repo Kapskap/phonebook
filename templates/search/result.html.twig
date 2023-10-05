@@ -3,16 +3,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Wyniki wyszukiwania</h1>
+    <h2>Wyniki wyszukiwania</h2>
 
-    {% if results is empty %}
+    {% if phones is empty %}
         <p>Brak wyników dla zapytania.</p>
     {% else %}
         <ul>
-            {% for phone in results %}
-                <li>{{ phone.id }} {{ phone.company }} {{ phone.number }}
+            {% for phone in phones %}
+                <li>{{ phone.company }} {{ phone.firstname }} {{ phone.lastname }} {{ phone.number }} </li>
 
-                {# Dodaj tutaj inne informacje o produkcie, które chcesz wyświetlić #}
             {% endfor %}
         </ul>
     {% endif %}

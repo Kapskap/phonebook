@@ -39,6 +39,24 @@ class PhonesRepository extends ServiceEntityRepository
         }
     }
 
+
+    /**
+     * @return Phones[]
+     */
+    public function findAllThanText(string $text): array
+    {
+        $entityManager = $this->getEntityManager();
+  //      WHERE p.company = :text
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\Phones p
+            WHERE p.Company LIKE :text
+            ORDER BY p.Company ASC'
+        )->setParameter('text', '%'.$text.'%');
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
 //    /**
 //     * @return Phones[] Returns an array of Phones objects
 //     */

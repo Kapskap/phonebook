@@ -14,7 +14,7 @@ class SearchFormType extends AbstractType
     {
         $builder
             ->add('query', TextType::class, [
-                'label' => 'Podaj id wyszukiwanego kontaktu: ',
+                'label' => 'Podaj nazwę firmy którą szukasz: ',
                 'required' => false,
             ]);
 //            ->add('submit', SubmitType::class, [
