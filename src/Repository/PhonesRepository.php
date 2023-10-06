@@ -57,6 +57,26 @@ class PhonesRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query->getResult();
     }
+
+    public function findAllSQL(string $text): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $text="%".$text."%";
+
+        $sql = '
+            SELECT * FROM phones p
+            WHERE p.number like :text
+            OR p.company like :text
+            OR p.firstname like :text
+            OR p.lastname like :text
+            ORDER BY p.company ASC
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['text' => $text]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
 //    /**
 //     * @return Phones[] Returns an array of Phones objects
 //     */

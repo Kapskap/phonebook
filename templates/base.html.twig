@@ -13,7 +13,14 @@
         {% endblock %}
     </head>
     <body>
-        <h1>Książka telefoniczna</h1>
+
+    <h1>Książka telefoniczna
+        <div id="menu">
+            <a href="{{ path('home_page') }}"><img src="/images/home.png" alt="Strona główna"></a>
+            <a href="{{ path('browse_phones') }}"><img src="/images/browse.png" alt="Zobacz wpisy"></a>
+            <a href="{{ path('search_page') }}"><img src="/images/search.png" alt="Szukaj"></a>
+        </div>
+    </h1>
 
             {% for message in app.flashes('success') %}
                     <div class="alert-success">
@@ -24,6 +31,7 @@
         {% block body %}
         <div class="content">
         Mam przyjemność zaprezentować Państwu prostą książkę telefoniczną opierającą się na bazie danych.<br>
+            <img src="/images/book.jpg" width="300" style="float: right; padding: 0 100px 0 0;"><br>
         Aby zobaczyć jakie dane występują obecnie w bazie 
             <a href="{{ path('browse_phones') }}"><strong>kliknij tutaj</strong></a>.
         <br><br>
