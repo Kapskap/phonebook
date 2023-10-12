@@ -23,10 +23,10 @@ class ChangeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //pobieranie danych z formularza
             $formData = $form->getData();
-            $number=$formData['number'];
-            $company=$formData['company'];
-            $firstname=$formData['firstname'];
-            $lastname=$formData['lastname'];
+            $number=$formData['Number'];
+            $company=$formData['Company'];
+            $firstname=$formData['Firstname'];
+            $lastname=$formData['Lastname'];
 
             //dodawanie rekordów do bazy
             $phone = new Phones();
@@ -40,8 +40,8 @@ class ChangeController extends AbstractController
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
             $this->addFlash('success', 'Dodano wpis o id: '.$phone->getID());
 
-           // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
-           return $this->redirectToRoute('browse_phones');
+            // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
+            return $this->redirectToRoute('browse_phones');
         }
 
         return $this->render('forms/index.html.twig', [
@@ -53,58 +53,46 @@ class ChangeController extends AbstractController
     #[Route('/edit/{id}', name: 'edit_phones')]
     public function updatePhones(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
-//        $phone = $entityManager->getRepository(Phones::class)->find($id);
-//dd($phone);
+
+        $phone = $entityManager->getRepository(Phones::class)->find($id);
+
         //tworzenie formularza
+        $form = $this->createForm(AddFormType::class, $phone);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($phone);
+            $entityManager->flush();
+
+            //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+            $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
+
+            return $this->redirectToRoute('browse_phones');
+        }
+
+        return $this->render('forms/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+//        $phone = $entityManager->getRepository(Phones::class)->find($id);
+//
+//        //tworzenie formularza
 //        $form = $this->createForm(AddFormType::class, $phone);
 //        $form->handleRequest($request);
-
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            //pobieranie danych z formularza
-//            $formData = $form->getData();
-//            $number=$formData['number'];
-//            $company=$formData['company'];
-//            $firstname=$formData['firstname'];
-//            $lastname=$formData['lastname'];
 //
-//            //dodawanie rekordów do bazy
-//            $phone = new Phones();
-//            $phone->setNumber($number);
-//            $phone->setCompany($company);
-//            if ($firstname!=null) $phone->setFirstname($firstname);
-//            if ($lastname!=null) $phone->setLastname($lastname);
+//        if ($form->isSubmitted() && $form->isValid()) {
 //            $entityManager->persist($phone);
 //            $entityManager->flush();
 //
 //            //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
-//            $this->addFlash('success', 'Dodano wpis o id: '.$phone->getID());
+//            $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
 //
-//            // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
 //            return $this->redirectToRoute('browse_phones');
 //        }
-
+//
 //        return $this->render('forms/index.html.twig', [
 //            'form' => $form->createView(),
 //        ]);
-
-        //Wartości pisane "na siłę" zamiast przy uzyciu formularza
-        $phone = $entityManager->getRepository(Phones::class)->find($id);
-
-        if (!$phone) {
-            throw $this->createNotFoundException(
-                'Nie znaleziono id '.$id
-            );
-        }
-        $phone->setCompany('Nowa Firma');
-        $phone->setNumber('+48 000 000 000');
-        $entityManager->flush();
-
-        //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
-        $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
-
-        return $this->redirectToRoute('show_phones', [
-            'id' => $phone->getId()
-        ]);
     }
 
     #[Route('/del/{id}', name: 'del_phones')]
