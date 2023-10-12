@@ -22,18 +22,8 @@ class ChangeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //pobieranie danych z formularza
-            $formData = $form->getData();
-            $number=$formData['Number'];
-            $company=$formData['Company'];
-            $firstname=$formData['Firstname'];
-            $lastname=$formData['Lastname'];
+            $phone = $form->getData();
 
-            //dodawanie rekordów do bazy
-            $phone = new Phones();
-            $phone->setNumber($number);
-            $phone->setCompany($company);
-            if ($firstname!=null) $phone->setFirstname($firstname);
-            if ($lastname!=null) $phone->setLastname($lastname);
             $entityManager->persist($phone);
             $entityManager->flush();
 
@@ -47,7 +37,6 @@ class ChangeController extends AbstractController
         return $this->render('forms/index.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
 
     #[Route('/edit/{id}', name: 'edit_phones')]
@@ -73,26 +62,6 @@ class ChangeController extends AbstractController
         return $this->render('forms/index.html.twig', [
             'form' => $form->createView(),
         ]);
-
-//        $phone = $entityManager->getRepository(Phones::class)->find($id);
-//
-//        //tworzenie formularza
-//        $form = $this->createForm(AddFormType::class, $phone);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager->persist($phone);
-//            $entityManager->flush();
-//
-//            //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
-//            $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
-//
-//            return $this->redirectToRoute('browse_phones');
-//        }
-//
-//        return $this->render('forms/index.html.twig', [
-//            'form' => $form->createView(),
-//        ]);
     }
 
     #[Route('/del/{id}', name: 'del_phones')]
@@ -114,4 +83,3 @@ class ChangeController extends AbstractController
         return $this->redirectToRoute('browse_phones');
     }
 }
-?>

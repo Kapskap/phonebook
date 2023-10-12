@@ -5,10 +5,13 @@
 {% block body %}
     <h2>Wyniki wyszukiwania</h2>
 
+
     {% if phones is empty %}
         <p>Brak wyników dla zapytania.</p>
     {% else %}
         <ul>
+     {#        <li>{{ phones.company }} {{ phones.firstname }} {{ phones.lastname }} {{ phones.number }} </li>#}
+
             {% for phone in phones %}
                 <li>{{ phone.company }} {{ phone.firstname }} {{ phone.lastname }} {{ phone.number }} </li>
 
