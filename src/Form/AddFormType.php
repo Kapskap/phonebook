@@ -15,18 +15,18 @@ class AddFormType extends AbstractType
     {
         $builder
             ->add('company', TextType::class, [
-                'label' => 'Firma: ',
+                'label' => '* Firma: ',
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'Imię: ',
+                'label' => ' Imię: ',
                 'required' => false,
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Nazwisko: ',
+                'label' => ' Nazwisko: ',
                 'required' => false,
             ])
             ->add('number', TextType::class, [
-                'label' => 'Nr telefonu: '
+                'label' => '* Nr telefonu: '
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Wyślij'
