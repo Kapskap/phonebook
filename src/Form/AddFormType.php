@@ -14,18 +14,18 @@ class AddFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('company', TextType::class, [
+            ->add('Company', TextType::class, [
                 'label' => 'Firma: ',
             ])
-            ->add('firstname', TextType::class, [
+            ->add('Firstname', TextType::class, [
                 'label' => 'Imię: ',
                 'required' => false,
             ])
-            ->add('lastname', TextType::class, [
+            ->add('Lastname', TextType::class, [
                 'label' => 'Nazwisko: ',
                 'required' => false,
             ])
-            ->add('number', TextType::class, [
+            ->add('Number', TextType::class, [
                 'label' => 'Nr telefonu: '
             ])
             ->add('submit', SubmitType::class, [
@@ -36,7 +36,7 @@ class AddFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => null,
+            'data_class' => Phones::class,
         ]);
     }
 }
