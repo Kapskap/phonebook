@@ -7,38 +7,36 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Phones;
+use App\Entity\Phone;
 
 class AddFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Company', TextType::class, [
+            ->add('company', TextType::class, [
                 'label' => '* Firma: ',
             ])
-            ->add('Firstname', TextType::class, [
+            ->add('firstName', TextType::class, [
                 'label' => ' Imię: ',
                 'required' => false,
             ])
-            ->add('Lastname', TextType::class, [
+            ->add('lastName', TextType::class, [
                 'label' => ' Nazwisko: ',
                 'required' => false,
             ])
-            ->add('Number', TextType::class, [
+            ->add('number', TextType::class, [
                 'label' => '* Nr telefonu: ',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Wyślij'
+                'label' => 'Zatwierdź'
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Phones::class,
+            'data_class' => Phone::class,
         ]);
     }
 }
-
-?>

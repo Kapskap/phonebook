@@ -10,10 +10,10 @@
         <p>Brak wyników dla zapytania.</p>
     {% else %}
         <ul>
-     {#        <li>{{ phones.company }} {{ phones.firstname }} {{ phones.lastname }} {{ phones.number }} </li>#}
+     {#        <li>{{ phone.company }} {{ phone.firstname }} {{ phone.lastname }} {{ phone.number }} </li>#}
 
             {% for phone in phones %}
-                <li>{{ phone.company }} {{ phone.firstname }} {{ phone.lastname }} {{ phone.number }} </li>
+                <li>{{ phone.company }} {{ phone.first_name }} {{ phone.last_name }} {{ phone.number }} </li>
 
             {% endfor %}
         </ul>

@@ -27,11 +27,11 @@ class Phone
     private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $Data;
+    private ?\DateTimeInterface $createdAt;
 
     public function __construct()
     {
-        $this->Data = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     /**
@@ -117,18 +117,22 @@ class Phone
     /**
      * @return \DateTimeInterface|null
      */
-    public function getData(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->Data;
+        return $this->createdAt;
     }
 
     /**
-     * @param \DateTimeInterface|null $Data
+     * @param \DateTimeInterface|null $createdAt
      */
-    public function setData(?\DateTimeInterface $Data): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): void
     {
-        $this->Data = $Data;
+        $this->createdAt = $createdAt;
     }
+
+
+
+
 
 
 }

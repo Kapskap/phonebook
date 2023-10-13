@@ -12,7 +12,7 @@
         {% else %}
             <div class="white">
         {% endif %}  
-        <a href="{{ path('show_phones', {id: phone.id }) }}">
+        <a href="{{ path('show_phone', {id: phone.id }) }}">
             {{ phone.company }} <strong>{{ phone.number }} </strong>
         </a></div><br>  
     {% endfor %}

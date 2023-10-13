@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Phones;
+use App\Entity\Phone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,10 +18,10 @@ class PhonesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Phones::class);
+        parent::__construct($registry, Phone::class);
     }
 
-    public function save(Phones $entity, bool $flush = false): void
+    public function save(Phone $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class PhonesRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Phones $entity, bool $flush = false): void
+    public function remove(Phone $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -41,7 +41,7 @@ class PhonesRepository extends ServiceEntityRepository
 
 
     /**
-     * @return Phones[]
+     * @return Phone[]
      */
     public function findAllThanText(string $text): array
     {
@@ -49,9 +49,9 @@ class PhonesRepository extends ServiceEntityRepository
   //      WHERE p.company = :text
         $query = $entityManager->createQuery(
             'SELECT p
-            FROM App\Entity\Phones p
-            WHERE p.Company LIKE :text
-            ORDER BY p.Company ASC'
+            FROM App\Entity\Phone p
+            WHERE p.company LIKE :text
+            ORDER BY p.company ASC'
         )->setParameter('text', '%'.$text.'%');
 
         // returns an array of Product objects
@@ -64,11 +64,11 @@ class PhonesRepository extends ServiceEntityRepository
         $text="%".$text."%";
 
         $sql = '
-            SELECT * FROM phones p
+            SELECT * FROM phone p
             WHERE p.number like :text
             OR p.company like :text
-            OR p.firstname like :text
-            OR p.lastname like :text
+            OR p.first_name like :text
+            OR p.last_name like :text
             ORDER BY p.company ASC
             ';
 
@@ -78,7 +78,7 @@ class PhonesRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 //    /**
-//     * @return Phones[] Returns an array of Phones objects
+//     * @return Phone[] Returns an array of Phones objects
 //     */
 //    public function findByExampleField($value): array
 //    {
