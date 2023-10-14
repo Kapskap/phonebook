@@ -17,17 +17,17 @@ class Phone
     #[ORM\Column(length: 15)]
     private ?string $number = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $company = null;
-
-    #[ORM\Column(name: "first_name", length: 25, nullable: true)]
-    private ?string $firstName = null;
-
-    #[ORM\Column(name: "last_name",length: 50, nullable: true)]
-    private ?string $lastName = null;
+    #[ORM\Column(length: 20)]
+    private ?string $typePhone = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $createdAt;
+
+    #[ORM\ManyToOne(inversedBy: 'phones')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Contact $contact = null;
+
+
 
     public function __construct()
     {
@@ -69,49 +69,17 @@ class Phone
     /**
      * @return string|null
      */
-    public function getCompany(): ?string
+    public function getTypePhone(): ?string
     {
-        return $this->company;
+        return $this->typePhone;
     }
 
     /**
-     * @param string|null $company
+     * @param string|null $typePhone
      */
-    public function setCompany(?string $company): void
+    public function setTypePhone(?string $typePhone): void
     {
-        $this->company = $company;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @param string|null $firstName
-     */
-    public function setFirstName(?string $firstName): void
-    {
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string|null $lastName
-     */
-    public function setLastName(?string $lastName): void
-    {
-        $this->lastName = $lastName;
+        $this->typePhone = $typePhone;
     }
 
     /**
@@ -130,9 +98,17 @@ class Phone
         $this->createdAt = $createdAt;
     }
 
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
 
+    public function setContact(?Contact $contact): self
+    {
+        $this->contact = $contact;
 
-
+        return $this;
+    }
 
 
 }
