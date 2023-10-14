@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Contact;
+use App\Entity\Phone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,6 +39,45 @@ class ContactRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+    /**
+     * @return Phone[]
+     */
+    public function findAllThanText(string $text): array
+    {
+        $entityManager = $this->getEntityManager();
+        //      WHERE p.company = :text
+        $query = $entityManager->createQuery(
+            'SELECT c
+            FROM App\Entity\Contact c
+            WHERE c.company LIKE :text
+            ORDER BY c.company ASC'
+        )->setParameter('text', '%'.$text.'%');
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
+    public function findAllSQL(string $text): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $text="%".$text."%";
+
+        $sql = '
+            SELECT * FROM contact c
+            WHERE c.company like :text
+            OR c.first_name like :text
+            OR c.last_name like :text
+            ORDER BY c.company ASC
+            ';
+
+        $resultSet = $conn->executeQuery($sql, ['text' => $text]);
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
 
 //    /**
 //     * @return Contact[] Returns an array of Contact objects

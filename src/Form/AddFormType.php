@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Phone;
+use App\Entity\Contact;
 
 class AddFormType extends AbstractType
 {
@@ -25,9 +25,6 @@ class AddFormType extends AbstractType
                 'label' => ' Nazwisko: ',
                 'required' => false,
             ])
-            ->add('number', TextType::class, [
-                'label' => '* Nr telefonu: ',
-            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Zatwierdź'
             ]);
@@ -36,7 +33,7 @@ class AddFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Phone::class,
+            'data_class' => Contact::class,
         ]);
     }
 }

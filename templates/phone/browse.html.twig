@@ -6,14 +6,14 @@
     <div class="content">
         Aby uzyskać bardziej szczegółowe informacje kliknij wybraną pozycję
     </div>    
-    {% for key, phone in phones %}
+    {% for key, contact in contacts %}
         {% if key is odd %}
             <div class="gray"> 
         {% else %}
             <div class="white">
         {% endif %}  
-        <a href="{{ path('show_phone', {id: phone.id }) }}">
-            {{ phone.company }} <strong>{{ phone.number }} </strong>
+        <a href="{{ path('show_contact', {id: contact.id }) }}">
+            {{ contact.company }} <strong>{{ contact.id }} </strong>
         </a></div><br>  
     {% endfor %}
  {% endblock %}

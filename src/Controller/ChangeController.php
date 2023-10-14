@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Phone;
+use App\Entity\Contact;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +13,8 @@ use App\Form\AddFormType;
 class ChangeController extends AbstractController
 {
     //dodawanie 1 rekordu do bazy Phones przy użyciu formularza
-    #[Route('/add', name: 'add_phone')]
-    public function createPhone(EntityManagerInterface $entityManager, Request $request): Response
+    #[Route('/add', name: 'add_contact')]
+    public function createContact(EntityManagerInterface $entityManager, Request $request): Response
     {
         //tworzenie formularza
         $form = $this->createForm(AddFormType::class);
@@ -22,16 +22,16 @@ class ChangeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //pobieranie danych z formularza
-            $phone = $form->getData();
+            $contact = $form->getData();
 
-            $entityManager->persist($phone);
+            $entityManager->persist($contact);
             $entityManager->flush();
 
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
-            $this->addFlash('success', 'Dodano wpis o id: '.$phone->getID());
+            $this->addFlash('success', 'Dodano wpis o id: '.$contact->getID());
 
             // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
-            return $this->redirectToRoute('browse_phone');
+            return $this->redirectToRoute('browse_contact');
         }
 
         return $this->render('forms/index.html.twig', [
@@ -39,24 +39,24 @@ class ChangeController extends AbstractController
         ]);
     }
 
-    #[Route('/edit/{id}', name: 'edit_phone')]
-    public function updatePhone(EntityManagerInterface $entityManager, int $id, Request $request): Response
+    #[Route('/edit/{id}', name: 'edit_contact')]
+    public function updateContact(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
 
-        $phone = $entityManager->getRepository(Phone::class)->find($id);
+        $contact = $entityManager->getRepository(Contact::class)->find($id);
 
         //tworzenie formularza
-        $form = $this->createForm(AddFormType::class, $phone);
+        $form = $this->createForm(AddFormType::class, $contact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($phone);
+            $entityManager->persist($contact);
             $entityManager->flush();
 
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
             $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
 
-            return $this->redirectToRoute('browse_phone');
+            return $this->redirectToRoute('browse_contact');
         }
 
         return $this->render('forms/index.html.twig', [
@@ -64,22 +64,22 @@ class ChangeController extends AbstractController
         ]);
     }
 
-    #[Route('/del/{id}', name: 'del_phone')]
-    public function deletePhone(EntityManagerInterface $entityManager, int $id): Response
+    #[Route('/del/{id}', name: 'del_contact')]
+    public function deleteContact(EntityManagerInterface $entityManager, int $id): Response
     {
-        $phone = $entityManager->getRepository(Phone::class)->find($id);
+        $contact = $entityManager->getRepository(Phone::class)->find($id);
 
-        if (!$phone) {
+        if (!$contact) {
             throw $this->createNotFoundException(
                 'Nie znaleziono id '.$id
             );
         }
-        $entityManager->remove($phone);
+        $entityManager->remove($contact);
         $entityManager->flush();
 
         //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
         $this->addFlash('success', 'Usunięto wpis o id: '.$id);
 
-        return $this->redirectToRoute('browse_phones');
+        return $this->redirectToRoute('browse_contact');
     }
 }

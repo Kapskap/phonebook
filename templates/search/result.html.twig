@@ -6,14 +6,14 @@
     <h2>Wyniki wyszukiwania</h2>
 
 
-    {% if phones is empty %}
+    {% if contacts is empty %}
         <p>Brak wyników dla zapytania.</p>
     {% else %}
         <ul>
      {#        <li>{{ phone.company }} {{ phone.firstname }} {{ phone.lastname }} {{ phone.number }} </li>#}
 
-            {% for phone in phones %}
-                <li>{{ phone.company }} {{ phone.first_name }} {{ phone.last_name }} {{ phone.number }} </li>
+            {% for contact in contacts %}
+                <li>{{ contact.company }} {{ contact.first_name }} {{ contact.last_name }} {{ contact.id }} </li>
 
             {% endfor %}
         </ul>

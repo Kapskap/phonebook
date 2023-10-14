@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-| show {{phones.id}}
+| show {{contacts.id}}
 {% endblock %}
 {% block body %}
  <h2>Oto szczegółowe informacje o wybranym kontakcie:</h2>
- <h3>Firma: {{ phones.company }}</h3>
- <h4>Nr telefonu: {{ phones.number }}</h4>
- <h4>Imię: {{phones.firstname}} Nazwisko: {{phones.lastname}}</h4>
+ <h3>Firma: {{ contacts.company }}</h3>
+ <h4>Nr telefonu: </h4>
+ <h4>Imię: {{contacts.firstname}} Nazwisko: {{contacts.lastname}}</h4>
  <h4>Wpis utworzono: {{createdat}}</h4>
  <div class="content">
     <ul>
-        <li><a href="{{ path('del_phone', {id: phones.id }) }}">Klikij aby usunąc te dane. </a></li>
-        <li><a href="{{ path('edit_phone', {id: phones.id }) }}">Kliknij aby edytować dane</a><br></li>
+        <li><a href="{{ path('del_contact', {id: contacts.id }) }}">Klikij aby usunąc te dane. </a></li>
+        <li><a href="{{ path('edit_contact', {id: contacts.id }) }}">Kliknij aby edytować dane</a><br></li>
 
     </ul>
 </div> 
