@@ -28,7 +28,7 @@ class Contact
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Phone::class)]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Phone::class, orphanRemoval: true)]
     #[ORM\OrderBy(["typePhone" => "ASC"])]
     private Collection $phones;
 

@@ -88,8 +88,16 @@ class ChangeController extends AbstractController
                 'Nie znaleziono id '.$id
             );
         }
+
+//        $phone = $entityManager->getRepository(Phone::class)->findBy(['contact'=>$id]);
+
         $entityManager->remove($contact);
         $entityManager->flush();
+
+//        $contact = $phone->getContact();
+//        $contact->removePhone($phone);
+//        $entityManager->persist($contact);
+//        $entityManager->flush();
 
         //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
         $this->addFlash('success', 'Usunięto wpis o id: '.$id);
