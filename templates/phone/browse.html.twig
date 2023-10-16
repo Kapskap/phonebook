@@ -13,7 +13,7 @@
             <div class="white">
         {% endif %}  
         <a href="{{ path('show_contact', {id: contact.id }) }}">
-            {{ contact.company }} <strong>{{ contact.id }} </strong>
+            <strong> {{ contact.company }} </strong> {{ contact.firstName }}  {{ contact.lastName }}
         </a></div><br>  
     {% endfor %}
  {% endblock %}

@@ -10,6 +10,11 @@ h1{
 h4{
     margin-left: 100px;
 }
+
+ul{
+    margin-left: 140px;
+}
+
 #menu{
     float: right;
     padding: 0 50px 0 0;
@@ -50,15 +55,3 @@ a:hover{
     text-decoration: solid;
 }
 
-th{
-    background-color: #FFC000;
-}
-td.white{
-    background-color: white;
-}
-td.yellow{
-    background-color: #FFF2CC;
-}
-table{
-    margin: 20px 0 0 50px;
-}

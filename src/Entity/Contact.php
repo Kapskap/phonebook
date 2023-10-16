@@ -29,6 +29,7 @@ class Contact
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Phone::class)]
+    #[ORM\OrderBy(["typePhone" => "ASC"])]
     private Collection $phones;
 
     public function __construct()

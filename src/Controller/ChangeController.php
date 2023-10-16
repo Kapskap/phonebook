@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contact;
+use App\Entity\Phone;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ use App\Form\AddFormType;
 
 class ChangeController extends AbstractController
 {
-    //dodawanie 1 rekordu do bazy Phones przy użyciu formularza
+    //dodawanie 1 rekordu do bazy przy użyciu formularza
     #[Route('/add', name: 'add_contact')]
     public function createContact(EntityManagerInterface $entityManager, Request $request): Response
     {
@@ -23,8 +24,21 @@ class ChangeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //pobieranie danych z formularza
             $contact = $form->getData();
-
             $entityManager->persist($contact);
+
+            //dodawanie telefonu do kontaktu
+            $phone1 = new Phone();
+            $phone1->setNumber('+48 111 222 333');
+            $phone1->setTypePhone('komórkowy');
+            $phone1->setContact($contact);
+            $entityManager->persist($phone1);
+
+            $phone2 = new Phone();
+            $phone2->setNumber('+48 111 111 111');
+            $phone2->setTypePhone('praca');
+            $phone2->setContact($contact);
+            $entityManager->persist($phone2);
+
             $entityManager->flush();
 
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
@@ -67,7 +81,7 @@ class ChangeController extends AbstractController
     #[Route('/del/{id}', name: 'del_contact')]
     public function deleteContact(EntityManagerInterface $entityManager, int $id): Response
     {
-        $contact = $entityManager->getRepository(Phone::class)->find($id);
+        $contact = $entityManager->getRepository(Contact::class)->find($id);
 
         if (!$contact) {
             throw $this->createNotFoundException(
