@@ -26,13 +26,11 @@ class ChangeController extends AbstractController
             //pobieranie danych z formularza
             $contact = $form->getData();
             $entityManager->persist($contact);
-
             $entityManager->flush();
 
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
             $this->addFlash('success', 'Dodano kontakt o id: '.$contact->getID());
 
-            // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
             return $this->redirectToRoute('show_contact',['id'=>$contact->getID()]);
         }
 
@@ -44,7 +42,6 @@ class ChangeController extends AbstractController
     #[Route('/edit/{id}', name: 'edit_contact')]
     public function updateContact(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
-
         $contact = $entityManager->getRepository(Contact::class)->find($id);
 
         //tworzenie formularza
@@ -77,15 +74,8 @@ class ChangeController extends AbstractController
             );
         }
 
-//        $phone = $entityManager->getRepository(Phone::class)->findBy(['contact'=>$id]);
-
         $entityManager->remove($contact);
         $entityManager->flush();
-
-//        $contact = $phone->getContact();
-//        $contact->removePhone($phone);
-//        $entityManager->persist($contact);
-//        $entityManager->flush();
 
         //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
         $this->addFlash('success', 'Usunięto kontakt o id: '.$id);
@@ -132,7 +122,6 @@ class ChangeController extends AbstractController
     public function updatePhone(EntityManagerInterface $entityManager, int $id, $cid, Request $request): Response
     {
         $contact = $entityManager->getRepository(Contact::class)->find($cid);
-
         if (!$contact) {
             throw $this->createNotFoundException(
                 'Nie mogę edytować telefonu dla kontaktu o id '.$cid.' - kontakt nie istnieje.'
@@ -140,7 +129,6 @@ class ChangeController extends AbstractController
         }
 
         $phone = $entityManager->getRepository(Phone::class)->find($id);
-
         if (!$phone) {
             throw $this->createNotFoundException(
                 'Nie mogę edytować telefonu dla kontaktu o id '.$id.' - telefon nie istnieje.'
@@ -154,7 +142,6 @@ class ChangeController extends AbstractController
             $phone = $form->getData();
             $phone->setContact($contact);
             $entityManager->persist($phone);
-
             $entityManager->flush();
 
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
@@ -172,7 +159,6 @@ class ChangeController extends AbstractController
     public function deletePhone(EntityManagerInterface $entityManager, int $id, $cid): Response
     {
         $phone = $entityManager->getRepository(Phone::class)->find($id);
-
         if (!$phone) {
             throw $this->createNotFoundException(
                 'Nie znaleziono telefonu o numerze id '.$id

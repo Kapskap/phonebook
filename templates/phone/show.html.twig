@@ -9,7 +9,8 @@
     <h4>Nr telefonu:
         <ul>
         {% if contact.phones is empty %}
-            <i>Nie zdefiniowano !</i>
+            <i>Nie podano nr telefonu - </i>
+            <a href="{{ path('add_phone', {id: contact.id }) }}"> kliknij tutaj aby go dodać.</a>
         {% else %}
             {% for phone in contact.phones %}
               <li>{{ phone.typePhone }} {{ phone.number }}

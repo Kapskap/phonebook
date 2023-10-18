@@ -32,12 +32,8 @@ class SearchController extends AbstractController
             //Wykorzystanie języka SQL
             $contact = $entityManager->getRepository(Contact::class)->findAllSQL($query);
 
-//dd($contact);
-
             // Przekaż wyniki do widoku
-            return $this->render('search/result.html.twig', ['contacts' => $contact,]);
-//            return $this->render('phone/browse.html.twig', ['phones' => $phone]);
-
+            return $this->render('search/result.html.twig', ['contacts' => $contact, 'query'=>$query]);
         }
 
         return $this->render('search/index.html.twig', [

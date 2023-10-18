@@ -21,6 +21,7 @@ class SearchFormType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Szukaj'
             ]);
+        $builder->setMethod('GET');
     }
 }
 
