@@ -3,18 +3,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Wyniki wyszukiwania</h2>
+    <h2>Wyniki wyszukiwania:</h2>
 
 
     {% if contacts is empty %}
-        <p>Brak wyników dla zapytania.</p>
+        <p>Brak wyników dla szukanego wyrażenia.</p>
     {% else %}
         <ul>
      {#        <li>{{ phone.company }} {{ phone.firstname }} {{ phone.lastname }} {{ phone.number }} </li>#}
 
             {% for contact in contacts %}
-                <li>{{ contact.company }} {{ contact.first_name }} {{ contact.last_name }} {{ contact.id }} </li>
-
+            <a href="{{ path('show_contact', {id: contact.id }) }}">
+                <li>{{ contact.company }} {{ contact.first_name }} {{ contact.last_name }}
+                    {{ contact.number }} {{ contact.type_phone }}</li>
+            </a>
             {% endfor %}
         </ul>
     {% endif %}

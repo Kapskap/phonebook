@@ -34,7 +34,6 @@ class ContactController extends AbstractController
     //wyświetlanie 1 rekordu
     #[Route('/show/{id}', name: 'show_contact')]
     public function show($id, ContactRepository $contactRepository): Response
-//    public function show($id, ContactRepository $contactRepository, PhonesRepository $phonesRepository): Response
     {
         $contact=$contactRepository->find($id);
         if (!$contact) {

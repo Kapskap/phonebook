@@ -65,8 +65,11 @@ class ContactRepository extends ServiceEntityRepository
         $text="%".$text."%";
 
         $sql = '
-            SELECT * FROM contact c
-            WHERE c.company like :text
+            SELECT c.id, c.company, c.first_name, c.last_name, p.number, p.type_phone FROM contact c
+                     INNER JOIN phone p 
+                     ON c.id=p.contact_id
+            WHERE p.number like :text
+            OR c.company like :text
             OR c.first_name like :text
             OR c.last_name like :text
             ORDER BY c.company ASC

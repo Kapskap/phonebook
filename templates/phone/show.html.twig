@@ -12,15 +12,19 @@
             <i>Nie zdefiniowano !</i>
         {% else %}
             {% for phone in contact.phones %}
-              <li>{{ phone.typePhone }} {{ phone.number }}</li>
+              <li>{{ phone.typePhone }} {{ phone.number }}
+                  <a href="{{ path('del_phone', {id: phone.id, cid: contact.id}) }}">usuń </a>
+                  <a href="{{ path('edit_phone', {id: phone.id, cid: contact.id}) }}">edytuj</a>
+              </li>
             {% endfor %}
         {% endif %}
         </ul>
     </h4>
  <h4>Wpis utworzono: {{createdat}}</h4>
  <div class="content">
-        <a href="{{ path('del_contact', {id: contact.id }) }}">Klikij aby usunąc te dane. </a><br>
-        <a href="{{ path('edit_contact', {id: contact.id }) }}">Kliknij aby edytować dane</a><br>
+        <a href="{{ path('del_contact', {id: contact.id }) }}">Klikij aby usunąc kontakt. </a><br>
+        <a href="{{ path('edit_contact', {id: contact.id }) }}">Kliknij aby edytować dane kontaktowe</a><br>
+        <a href="{{ path('add_phone', {id: contact.id }) }}">Kliknij aby dadać nr telefonu</a><br>
      <br><a href="{{ path('browse_contact') }}">Kliknij aby powrócić do przeglądania danych.</a><br>
 </div> 
 {% endblock %}

@@ -9,7 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use App\Form\AddFormType;
+use App\Form\AddContactFormType;
+use App\Form\AddPhoneFormType;
 
 class ChangeController extends AbstractController
 {
@@ -18,7 +19,7 @@ class ChangeController extends AbstractController
     public function createContact(EntityManagerInterface $entityManager, Request $request): Response
     {
         //tworzenie formularza
-        $form = $this->createForm(AddFormType::class);
+        $form = $this->createForm(AddContactFormType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -26,26 +27,13 @@ class ChangeController extends AbstractController
             $contact = $form->getData();
             $entityManager->persist($contact);
 
-            //dodawanie telefonu do kontaktu
-            $phone1 = new Phone();
-            $phone1->setNumber('+48 111 222 333');
-            $phone1->setTypePhone('komórkowy');
-            $phone1->setContact($contact);
-            $entityManager->persist($phone1);
-
-            $phone2 = new Phone();
-            $phone2->setNumber('+48 111 111 111');
-            $phone2->setTypePhone('praca');
-            $phone2->setContact($contact);
-            $entityManager->persist($phone2);
-
             $entityManager->flush();
 
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
-            $this->addFlash('success', 'Dodano wpis o id: '.$contact->getID());
+            $this->addFlash('success', 'Dodano kontakt o id: '.$contact->getID());
 
             // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
-            return $this->redirectToRoute('browse_contact');
+            return $this->redirectToRoute('show_contact',['id'=>$contact->getID()]);
         }
 
         return $this->render('forms/index.html.twig', [
@@ -60,7 +48,7 @@ class ChangeController extends AbstractController
         $contact = $entityManager->getRepository(Contact::class)->find($id);
 
         //tworzenie formularza
-        $form = $this->createForm(AddFormType::class, $contact);
+        $form = $this->createForm(AddContactFormType::class, $contact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -68,9 +56,9 @@ class ChangeController extends AbstractController
             $entityManager->flush();
 
             //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
-            $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
+            $this->addFlash('success', 'Zmioniono dane kontaktowe dla id: '.$id);
 
-            return $this->redirectToRoute('browse_contact');
+            return $this->redirectToRoute('show_contact',['id'=>$id]);
         }
 
         return $this->render('forms/index.html.twig', [
@@ -100,8 +88,102 @@ class ChangeController extends AbstractController
 //        $entityManager->flush();
 
         //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
-        $this->addFlash('success', 'Usunięto wpis o id: '.$id);
+        $this->addFlash('success', 'Usunięto kontakt o id: '.$id);
 
         return $this->redirectToRoute('browse_contact');
+    }
+
+    #[Route('/add_phone/{id}', name: 'add_phone')]
+    public function createPhone(EntityManagerInterface $entityManager, int $id, Request $request): Response
+    {
+        $contact = $entityManager->getRepository(Contact::class)->find($id);
+
+        if (!$contact) {
+            throw $this->createNotFoundException(
+                'Nie mogę dodać telefonu do kontaktu o id '.$id.' - kontakt nie istnieje.'
+            );
+        }
+
+        //tworzenie formularza
+        $form = $this->createForm(AddPhoneFormType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //pobieranie danych z formularza
+            $phone = $form->getData();
+            $phone->setContact($contact);
+            $entityManager->persist($phone);
+
+            $entityManager->flush();
+
+            //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+            $this->addFlash('success', 'Dodano numer telefonu o id: '.$phone->getID());
+
+            // return new Response('Dodano nowy kontakt o  id = '.$phone->getId());
+            return $this->redirectToRoute('show_contact',['id'=>$id]);
+        }
+
+        return $this->render('forms/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/edit_phone/{id}/{cid}', name: 'edit_phone')]
+    public function updatePhone(EntityManagerInterface $entityManager, int $id, $cid, Request $request): Response
+    {
+        $contact = $entityManager->getRepository(Contact::class)->find($cid);
+
+        if (!$contact) {
+            throw $this->createNotFoundException(
+                'Nie mogę edytować telefonu dla kontaktu o id '.$cid.' - kontakt nie istnieje.'
+            );
+        }
+
+        $phone = $entityManager->getRepository(Phone::class)->find($id);
+
+        if (!$phone) {
+            throw $this->createNotFoundException(
+                'Nie mogę edytować telefonu dla kontaktu o id '.$id.' - telefon nie istnieje.'
+            );
+        }
+        //tworzenie formularza
+        $form = $this->createForm(AddPhoneFormType::class, $phone);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //pobieranie danych z formularza
+            $phone = $form->getData();
+            $phone->setContact($contact);
+            $entityManager->persist($phone);
+
+            $entityManager->flush();
+
+            //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+            $this->addFlash('success', 'Zmioniono wpis o id: '.$id);
+
+            return $this->redirectToRoute('show_contact',['id'=>$cid]);
+        }
+
+        return $this->render('forms/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/del_phone/{id}/{cid}', name: 'del_phone')]
+    public function deletePhone(EntityManagerInterface $entityManager, int $id, $cid): Response
+    {
+        $phone = $entityManager->getRepository(Phone::class)->find($id);
+
+        if (!$phone) {
+            throw $this->createNotFoundException(
+                'Nie znaleziono telefonu o numerze id '.$id
+            );
+        }
+        $entityManager->remove($phone);
+        $entityManager->flush();
+
+        //genrowanie powiadomień które są wyświetleane z poziomu głównego szablonu
+        $this->addFlash('success', 'Usunięto numer telefonu o id: '.$id);
+
+        return $this->redirectToRoute('show_contact',['id'=>$cid]);
     }
 }
