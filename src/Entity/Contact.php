@@ -32,6 +32,9 @@ class Contact
     #[ORM\OrderBy(["typePhone" => "ASC"])]
     private Collection $phones;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photoFilename = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -117,6 +120,18 @@ class Contact
                 $phone->setContact(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhotoFilename(): ?string
+    {
+        return $this->photoFilename;
+    }
+
+    public function setPhotoFilename(?string $photoFilename): self
+    {
+        $this->photoFilename = $photoFilename;
 
         return $this;
     }

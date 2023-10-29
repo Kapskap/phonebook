@@ -11,12 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\AddContactFormType;
 use App\Form\AddPhoneFormType;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class ChangeController extends AbstractController
 {
     //dodawanie 1 rekordu do bazy przy użyciu formularza
     #[Route('/add', name: 'add_contact')]
-    public function createContact(EntityManagerInterface $entityManager, Request $request): Response
+    public function createContact(EntityManagerInterface $entityManager, Request $request,
+                                  #[Autowire('%photo_dir%')] string $photoDir): Response
     {
         //tworzenie formularza
         $form = $this->createForm(AddContactFormType::class);
@@ -25,6 +27,13 @@ class ChangeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //pobieranie danych z formularza
             $contact = $form->getData();
+
+            if ($photo = $form['photo']->getData()) {
+                $filename = 'IMG_'.bin2hex(random_bytes(5)).'.'.$photo->guessExtension();
+                $photo->move($photoDir, $filename);
+                $contact->setPhotoFilename($filename);
+            }
+
             $entityManager->persist($contact);
             $entityManager->flush();
 
@@ -40,7 +49,8 @@ class ChangeController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit_contact')]
-    public function updateContact(EntityManagerInterface $entityManager, int $id, Request $request): Response
+    public function updateContact(EntityManagerInterface $entityManager, int $id, Request $request,
+                                  #[Autowire('%photo_dir%')] string $photoDir): Response
     {
         $contact = $entityManager->getRepository(Contact::class)->find($id);
 
@@ -49,6 +59,14 @@ class ChangeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($photo = $form['photo']->getData()) {
+                $filename=$contact->getPhotoFilename();
+                if ($filename==null) {$filename = 'IMG_'.bin2hex(random_bytes(5)).'.'.$photo->guessExtension();}
+                $photo->move($photoDir, $filename);
+                $contact->setPhotoFilename($filename);
+            }
+
             $entityManager->persist($contact);
             $entityManager->flush();
 
@@ -74,6 +92,8 @@ class ChangeController extends AbstractController
             );
         }
 
+//        $filename=$contact->getPhotoFilename();
+//        unlink("/uploads/photos/".$filename);
         $entityManager->remove($contact);
         $entityManager->flush();
 

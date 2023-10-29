@@ -4,8 +4,13 @@
 {% endblock %}
 {% block body %}
  <h2>Oto szczegółowe informacje o wybranym kontakcie:</h2>
- <h3>Firma: {{ contact.company }}</h3>
+    {% if contact.photofilename is not empty %}
+        <img src="/uploads/photos/{{ contact.photofilename }}" width="300"
+             style="float: right; padding: 0 200px 10px 10px; border-radius: 15px 0 10px 0;">
+    {% endif %}
+    <h3>Firma: {{ contact.company }}</h3>
  <h4>Imię: {{contact.firstname}} Nazwisko: {{contact.lastname}}</h4>
+
     <h4>Nr telefonu:
         <ul>
         {% if contact.phones is empty %}
@@ -27,5 +32,6 @@
         <a href="{{ path('edit_contact', {id: contact.id }) }}">Kliknij aby edytować dane kontaktowe</a><br>
         <a href="{{ path('add_phone', {id: contact.id }) }}">Kliknij aby dadać nr telefonu</a><br>
      <br><a href="{{ path('browse_contact') }}">Kliknij aby powrócić do przeglądania danych.</a><br>
-</div> 
+</div>
+
 {% endblock %}
