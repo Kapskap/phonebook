@@ -92,8 +92,7 @@ class ChangeController extends AbstractController
             );
         }
 
-//        $filename=$contact->getPhotoFilename();
-//        unlink("%kernel.project_dir%/public/uploads/photos".$filename);
+//symfony console
         $entityManager->remove($contact);
         $entityManager->flush();
 
