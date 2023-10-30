@@ -41,6 +41,11 @@ class Contact
         $this->phones = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->company.' '.$this->firstName.' '.$this->lastName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
