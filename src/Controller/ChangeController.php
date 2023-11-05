@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class ChangeController extends AbstractController
 {
     //dodawanie 1 rekordu do bazy przy użyciu formularza
-    #[Route('/add', name: 'add_contact')]
+    #[Route('/admin/add', name: 'add_contact')]
     public function createContact(EntityManagerInterface $entityManager, Request $request,
                                   #[Autowire('%photo_dir%')] string $photoDir): Response
     {
@@ -48,7 +48,7 @@ class ChangeController extends AbstractController
         ]);
     }
 
-    #[Route('/edit/{id}', name: 'edit_contact')]
+    #[Route('/admin/edit/{id}', name: 'edit_contact')]
     public function updateContact(EntityManagerInterface $entityManager, int $id, Request $request,
                                   #[Autowire('%photo_dir%')] string $photoDir): Response
     {
@@ -81,7 +81,7 @@ class ChangeController extends AbstractController
         ]);
     }
 
-    #[Route('/del/{id}', name: 'del_contact')]
+    #[Route('/admin/del/{id}', name: 'del_contact')]
     public function deleteContact(EntityManagerInterface $entityManager, int $id): Response
     {
         $contact = $entityManager->getRepository(Contact::class)->find($id);
@@ -112,7 +112,7 @@ class ChangeController extends AbstractController
         return $this->redirectToRoute('browse_contact');
     }
 
-    #[Route('/add_phone/{id}', name: 'add_phone')]
+    #[Route('/admin/add_phone/{id}', name: 'add_phone')]
     public function createPhone(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
         $contact = $entityManager->getRepository(Contact::class)->find($id);
@@ -147,7 +147,7 @@ class ChangeController extends AbstractController
         ]);
     }
 
-    #[Route('/edit_phone/{id}/{cid}', name: 'edit_phone')]
+    #[Route('/admin/edit_phone/{id}/{cid}', name: 'edit_phone')]
     public function updatePhone(EntityManagerInterface $entityManager, int $id, $cid, Request $request): Response
     {
         $contact = $entityManager->getRepository(Contact::class)->find($cid);
@@ -184,7 +184,7 @@ class ChangeController extends AbstractController
         ]);
     }
 
-    #[Route('/del_phone/{id}/{cid}', name: 'del_phone')]
+    #[Route('/admin/del_phone/{id}/{cid}', name: 'del_phone')]
     public function deletePhone(EntityManagerInterface $entityManager, int $id, $cid): Response
     {
         $phone = $entityManager->getRepository(Phone::class)->find($id);

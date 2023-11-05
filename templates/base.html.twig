@@ -17,12 +17,18 @@
 
     <h1>Książka telefoniczna
         <div id="menu">
-            <a href="{{ path('home') }}"><img src="/images/home.png" alt="Strona główna"></a>
-            <a href="{{ path('browse_contact') }}"><img src="/images/browse.png" alt="Zobacz wpisy"></a>
-            <a href="{{ path('add_contact') }}"><img src="/images/add.png" alt="Dodaj kontakt"></a>
-            <a href="{{ path('search_contact') }}"><img src="/images/search.png" alt="Szukaj"></a>
+            <a href="{{ path('app_home') }}" title="Strona główna"><img src="/images/home.png" alt="Strona główna"></a>
+            <a href="{{ path('browse_contact') }}" title="Kontakty"><img src="/images/browse.png" alt="Zobacz wpisy"></a>
+            <a href="{{ path('add_contact') }}" title="Dodaj"><img src="/images/add.png" alt="Dodaj kontakt"></a>
+            <a href="{{ path('search_contact') }}" title="Szukaj"><img src="/images/search.png" alt="Szukaj"></a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_logout') }}" title="Wyloguj"><img src="/images/admin_logout.png" alt="Wyloguj"></a>
+            {% else %}
+                <a href="{{ path('app_login') }}" title="Zaloguj"><img src="/images/admin_login.png" alt="Zaloguj"></a>
+            {% endif %}
         </div>
     </h1>
+
 
             {% for message in app.flashes('success') %}
                     <div class="alert-success">

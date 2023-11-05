@@ -33,6 +33,6 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToCrud('Kontakty', 'fas fa-map-marker-alt', Contact::class);
         yield MenuItem::linkToCrud('Telefony', 'fas fa-comments', Phone::class);
-        yield MenuItem::linktoRoute('Powrót na stronę główną', 'fas fa-home', 'home');
+        yield MenuItem::linktoRoute('Powrót na stronę główną', 'fas fa-home', 'app_home');
     }
 }
