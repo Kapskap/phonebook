@@ -16,4 +16,7 @@
             <strong> {{ contact.company }} </strong> {{ contact.firstName }}  {{ contact.lastName }}
         </a></div><br>  
     {% endfor %}
+    <div class="content">
+        <a href="{{ path('app_export')}}">Klikij aby wyeksportować dane do pliku csv. </a><br>
+    </div>
  {% endblock %}

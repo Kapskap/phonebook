@@ -81,6 +81,17 @@ class ContactRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 
+    public function findAllWithSort(): array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT c
+            FROM App\Entity\Contact c
+            ORDER BY c.company ASC'
+        );
+        return $query->getResult();
+    }
+
 
 //    /**
 //     * @return Contact[] Returns an array of Contact objects
