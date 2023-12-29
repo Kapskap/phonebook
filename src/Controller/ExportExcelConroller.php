@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ExportExcelConroller extends AbstractController
 {
-    #[Route('/ee', name: 'app_exportexcel')]
-    public function exportexcel()
+    #[Route('/export_excel', name: 'app_export_to_excel')]
+    public function exportexcel(EntityManagerInterface $entityManager)
     {
 
         $spreadsheet = new Spreadsheet();
@@ -27,40 +27,52 @@ class ExportExcelConroller extends AbstractController
         /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setCellValue('A1', 'Hello World !');
-        $sheet->setTitle("My First Worksheet");
+        //Wstawianie danych:
+        // Set cell name and merge cells
+        $sheet->setCellValue('A1', 'Dane kontaktowe')->mergeCells('A1:D1');
 
-        // Create your Office 2007 Excel (XLSX Format)
+        // Ustawienie nazw kolumn
+        $columnNames = [
+            'ID kontaktu',
+            'Imię',
+            'Nazwisko',
+            'Firma',
+        ];
+        $columnLetter = 'A';
+        foreach ($columnNames as $columnName) {
+            $columnLetter++;
+            $sheet->setCellValue($columnLetter.'2', $columnName);
+        }
+
+        // Dodanie danych pobranych z bazy do kolumn
+        $contactRepository = $entityManager->getRepository(contact::class);
+        $contacts = $contactRepository->findAllWithSort();
+
+        $i=3;
+        foreach ($contacts as $contact) {
+            $columnValue = array($contact->getId(), $contact->getFirstName(), $contact->getLastName(), $contact->getCompany());
+            $columnLetter = 'A';
+            foreach ($columnValue as $value) {
+                $columnLetter++;
+                $sheet->setCellValue($columnLetter . $i, $value);
+            }
+            $i++;
+        }
+
+        $sheet->setTitle("Kontakty");
+
+        // utworzenie dokumentu Office 2007 Excel (XLSX Format)
         $writer = new Xlsx($spreadsheet);
 
-        // Create a Temporary file in the system
-        $fileName = 'my_first_excel_symfony4.xlsx';
+        // Utworzenie pliku tymczasowego w systemie
+        $fileName = 'kontakty.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
 
-        // Create the excel file in the tmp directory of the system
+        // Utworzenie pliku excela w katalogu temp systemu
         $writer->save($temp_file);
 
-        // Return the excel file as an attachment
+        // Zwrócenie pliku excela jak załącznika
         return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
-
-
-//        $contactRepository = $entityManager->getRepository(contact::class);
-//        //$contacts = $contactRepository->findBy([], ['company' => 'ASC']);
-//        $contacts = $contactRepository->findAllWithSort();
-//
-//        $rows = array();
-//        foreach ($contacts as $contact) {
-//            $data = array($contact->getId(), $contact->getFirstName(), $contact->getLastName(), $contact->getCompany());
-//
-//            $rows[] = implode(',', $data);
-//        }
-//
-//        $content = implode("\n", $rows);
-//        $response = new Response($content);
-//        $response->headers->set('Content-Type', 'text/csv');
-//
-//        return $response;
-
     }
 
 }
