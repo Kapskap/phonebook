@@ -14,11 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Service\InsertRecords;
 
 class ImportExportController extends AbstractController
 {
     #[Route('/import', name: 'app_import')]
-    function import(Request $request, EntityManagerInterface $entityManager)
+    function import(Request $request, EntityManagerInterface $entityManager, InsertRecords $insertRecords)
     {
         $form = $this->createFormBuilder()
             ->add('submitFile', FileType::class, [
@@ -38,20 +39,10 @@ class ImportExportController extends AbstractController
             if (($handle = fopen($file->getPathname(), "r")) !== false) {
                 // Przetwarzanie danych.
                 while (($data = fgetcsv($handle)) !== false) {
-
-                    $query = "INSERT INTO contact (first_name, last_name, company)
-                    VALUES(:first_name, :last_name, :company)";
-
-                    $stmt = $entityManager->getConnection()->prepare($query);
-                    $r = $stmt->execute(array(
-                        'first_name' => $data[1],
-                        'last_name' => $data[2],
-                        'company' => $data[3],
-                        // 'created_at' => $row['created_at'],
-                    ));
+                    $working = $insertRecords->insertContact($data[1], $data[2], $data[3], $entityManager);
                 }
-
                 fclose($handle);
+
                 $this->addFlash('success', 'Dane zaimportowano poprawnie ');
                 return $this->redirectToRoute('browse_contact');
             }
