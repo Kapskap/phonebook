@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 #[AsCommand(
     name: 'apps:random-records',
@@ -88,14 +89,22 @@ class AppsRandomRecordsCommand extends Command
         }
         fclose($file);
 
+        $progressBar = new ProgressBar($output, $howMuch);
+        $progressBar->setBarCharacter('<fg=green>=</>');
+        $progressBar->setEmptyBarCharacter("<fg=red>=</>");
+        $progressBar->setProgressCharacter("<fg=green>➤</>");
+        $progressBar->start();
+
         for($i=0;$i<$howMuch;$i++) {
             $first_name = $first_names[array_rand($first_names)];
             $last_name = $last_names[array_rand($last_names)];
             $company = $companies[array_rand($companies)];
 
             $this->insertRecords->insertContact($first_name, $last_name, $company);
+            $progressBar->advance();
         }
 
+        $progressBar->finish();
         $io->success("Operacja zakończona");
 
         return 0;
