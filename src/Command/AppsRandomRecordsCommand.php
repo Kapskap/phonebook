@@ -39,14 +39,14 @@ class AppsRandomRecordsCommand extends Command
         $howMuch = $input->getArgument('how-much');
 
         if ($howMuch) {
-            $io->note(sprintf('Podano: %s rekordów', $howMuch));
+            $io->note(sprintf('Podano: %s rekordów. Rozpoczynam pracę.', $howMuch));
         }
         else{
-            $howMuch = 100;
+            $howMuch = 1000;
             $io->note(sprintf('Generuje: %s rekordów', $howMuch));
         }
 
-        //Odczyt "losowych" danych do tablic
+        //Odczyt "losowych" danych do tablic - imie
         $file=fopen ("first_name.txt", "r");
         if (!($file))
         {
@@ -60,12 +60,43 @@ class AppsRandomRecordsCommand extends Command
         }
         fclose($file);
 
-        $first_name = $first_names[array_rand($first_names)];
+        //Odczyt "losowych" danych do tablic - nazwisko
+        $file=fopen ("last_name.txt", "r");
+        if (!($file))
+        {
+            print 'błąd odczytu ';
+        }
+        else {
+            $i = 0;
+            while(!feof($file)) {
+                $last_names[$i++] = fgets($file);
+            }
+        }
+        fclose($file);
 
+        //Odczyt "losowych" danych do tablic - firma
+        $file=fopen ("company.txt", "r");
+        if (!($file))
+        {
+            print 'błąd odczytu ';
+        }
+        else {
+            $i = 0;
+            while(!feof($file)) {
+                $companies[$i++] = fgets($file);
+            }
+        }
+        fclose($file);
 
-        $this->insertRecords->insertContact($first_name, 'Test', 'Testing');
+        for($i=0;$i<$howMuch;$i++) {
+            $first_name = $first_names[array_rand($first_names)];
+            $last_name = $last_names[array_rand($last_names)];
+            $company = $companies[array_rand($companies)];
 
-        $io->success($first_name);
+            $this->insertRecords->insertContact($first_name, $last_name, $company);
+        }
+
+        $io->success("Operacja zakończona");
 
         return 0;
     }
