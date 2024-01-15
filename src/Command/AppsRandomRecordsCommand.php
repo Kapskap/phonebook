@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\InsertRecords;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,11 +13,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'apps:random-records',
-    description: 'Add a short description for your command',
+    description: 'Send to insert random value',
 )]
 class AppsRandomRecordsCommand extends Command
 {
-    public function __construct()
+
+    public function __construct(
+        private InsertRecords $insertRecords)
     {
         parent::__construct();
     }
@@ -26,7 +29,7 @@ class AppsRandomRecordsCommand extends Command
         $this
             ->setDescription('Podaj ilość losowych kontaktów ktore pojawią się w bazie.')
             ->addArgument('how-much', InputArgument::OPTIONAL, 'how much')
-            ->addOption('yell', null, InputOption::VALUE_NONE, 'Yell?')
+//            ->addOption('yell', null, InputOption::VALUE_NONE, 'Yell?')
         ;
     }
 
@@ -43,20 +46,24 @@ class AppsRandomRecordsCommand extends Command
             $io->note(sprintf('Generuje: %s rekordów', $howMuch));
         }
 
-        $first_names = [
-            'Jan',
-            'Adam',
-            'Karol',
-            'Ewa',
-            'Anna',
-            'Janusz',
-            'Monika',
-        ];
+        //Odczyt "losowych" danych do tablic
+        $file=fopen ("first_name.txt", "r");
+        if (!($file))
+        {
+            print 'błąd odczytu ';
+        }
+        else {
+            $i = 0;
+            while(!feof($file)) {
+                $first_names[$i++] = fgets($file);
+            }
+        }
+        fclose($file);
+
         $first_name = $first_names[array_rand($first_names)];
 
-        if ($input->getOption('yell')) {
-            $first_name = strtoupper($first_name);
-        }
+
+        $this->insertRecords->insertContact($first_name, 'Test', 'Testing');
 
         $io->success($first_name);
 

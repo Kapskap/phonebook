@@ -19,7 +19,7 @@ use App\Service\InsertRecords;
 class ImportExportController extends AbstractController
 {
     #[Route('/import', name: 'app_import')]
-    function import(Request $request, EntityManagerInterface $entityManager, InsertRecords $insertRecords)
+    function import(Request $request, InsertRecords $insertRecords)
     {
         $form = $this->createFormBuilder()
             ->add('submitFile', FileType::class, [
@@ -39,7 +39,7 @@ class ImportExportController extends AbstractController
             if (($handle = fopen($file->getPathname(), "r")) !== false) {
                 // Przetwarzanie danych.
                 while (($data = fgetcsv($handle)) !== false) {
-                    $working = $insertRecords->insertContact($data[1], $data[2], $data[3], $entityManager);
+                    $working = $insertRecords->insertContact($data[1], $data[2], $data[3]);
                 }
                 fclose($handle);
 

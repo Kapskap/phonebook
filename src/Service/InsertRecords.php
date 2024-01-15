@@ -6,11 +6,21 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class InsertRecords
 {
-    public function insertContact(string $first_name, string $last_name, string $company, EntityManagerInterface $entityManager)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
+    }
+
+
+    public function insertContact(string $first_name, string $last_name, string $company)
+    {
+        $em = $this->entityManager;
+
         $query = "INSERT INTO contact (first_name, last_name, company)
                     VALUES(:first_name, :last_name, :company)";
-        $stmt = $entityManager->getConnection()->prepare($query);
+        $stmt = $em->getConnection()->prepare($query);
         $r = $stmt->execute(array(
             'first_name' => $first_name,
             'last_name' => $last_name,
