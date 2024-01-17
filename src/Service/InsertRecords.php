@@ -25,7 +25,7 @@ class InsertRecords
             'first_name' => $first_name,
             'last_name' => $last_name,
             'company' => $company,
-            // 'created_at' => $row['created_at'],
+//            'created_at' => $created_at,
         ));
     }
 }

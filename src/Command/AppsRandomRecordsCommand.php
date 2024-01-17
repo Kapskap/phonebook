@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Service\InsertRecords;
+use App\Service\ReadFile;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +21,7 @@ class AppsRandomRecordsCommand extends Command
 {
 
     public function __construct(
-        private InsertRecords $insertRecords)
+        private InsertRecords $insertRecords, private ReadFile $readFile)
     {
         parent::__construct();
     }
@@ -47,47 +48,10 @@ class AppsRandomRecordsCommand extends Command
             $io->note(sprintf('Generuje: %s rekordów', $howMuch));
         }
 
-        //Odczyt "losowych" danych do tablic - imie
-        $file=fopen ("first_name.txt", "r");
-        if (!($file))
-        {
-            print 'błąd odczytu ';
-        }
-        else {
-            $i = 0;
-            while(!feof($file)) {
-                $first_names[$i++] = fgets($file);
-            }
-        }
-        fclose($file);
-
-        //Odczyt "losowych" danych do tablic - nazwisko
-        $file=fopen ("last_name.txt", "r");
-        if (!($file))
-        {
-            print 'błąd odczytu ';
-        }
-        else {
-            $i = 0;
-            while(!feof($file)) {
-                $last_names[$i++] = fgets($file);
-            }
-        }
-        fclose($file);
-
-        //Odczyt "losowych" danych do tablic - firma
-        $file=fopen ("company.txt", "r");
-        if (!($file))
-        {
-            print 'błąd odczytu ';
-        }
-        else {
-            $i = 0;
-            while(!feof($file)) {
-                $companies[$i++] = fgets($file);
-            }
-        }
-        fclose($file);
+        //Odczyt "losowych" danych do tablic
+        $first_names = $this->readFile->readTxt("first_name.txt");
+        $last_names = $this->readFile->readTxt("last_name.txt");
+        $companies = $this->readFile->readTxt("company.txt");
 
         $progressBar = new ProgressBar($output, $howMuch);
         $progressBar->setBarCharacter('<fg=green>=</>');
@@ -99,6 +63,7 @@ class AppsRandomRecordsCommand extends Command
             $first_name = $first_names[array_rand($first_names)];
             $last_name = $last_names[array_rand($last_names)];
             $company = $companies[array_rand($companies)];
+//            $created_at = new \DateTimeImmutable(sprintf('-%d days', rand(1, 100)));
 
             $this->insertRecords->insertContact($first_name, $last_name, $company);
             $progressBar->advance();
