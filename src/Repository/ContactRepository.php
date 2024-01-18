@@ -6,6 +6,7 @@ use App\Entity\Contact;
 use App\Entity\Phone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Contact>
@@ -17,6 +18,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ContactRepository extends ServiceEntityRepository
 {
+    public const PAGINATOR_PER_PAGE = 25;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Contact::class);
@@ -66,7 +69,7 @@ class ContactRepository extends ServiceEntityRepository
 
         $sql = '
             SELECT c.id, c.company, c.first_name, c.last_name, p.number, p.type_phone FROM contact c
-                     INNER JOIN phone p 
+                     LEFT JOIN phone p 
                      ON c.id=p.contact_id
             WHERE p.number like :text
             OR c.company like :text
@@ -92,6 +95,19 @@ class ContactRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function getCommentPaginator(int $offset): Paginator
+    {
+        $query = $this->createQueryBuilder('c')
+//            ->andWhere('c.contact = :contact')
+//            ->setParameter('contact', $contact)
+//            ->orderBy('c.createdAt', 'DESC')
+            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setFirstResult($offset)
+            ->getQuery()
+        ;
+
+        return new Paginator($query);
+    }
 
 //    /**
 //     * @return Contact[] Returns an array of Contact objects

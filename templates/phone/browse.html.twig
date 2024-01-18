@@ -4,6 +4,7 @@
 {% endblock %}
 {% block body %}
     <div class="content">
+        Znaleziono <b> {{ contacts|length }} </b> kontaktów.<br><br>
         Aby uzyskać bardziej szczegółowe informacje kliknij wybraną pozycję
     </div>    
     {% for key, contact in contacts %}
@@ -15,7 +16,18 @@
         <a href="{{ path('show_contact', {id: contact.id }) }}">
             <strong> {{ contact.company }} </strong> {{ contact.firstName }}  {{ contact.lastName }}
         </a></div><br>  
+
+        {% if key == 24 %}
+            {% if previous >= 0 %}
+                <button style="margin-left: 70px;"><a href="{{ path('browse_contact', { id: contact.id, offset: previous }) }}">Wstecz</a></button>
+            {% endif %}
+            <span style="margin-left: 100px;"><b>Strona {{ next/25 }} z {{ (contacts|length/25)|round(0,'ceil') }}</b></span>
+            {% if next < contacts|length %}
+               <button style="margin-left: 150px;"><a href="{{ path('browse_contact', { id: contact.id, offset: next }) }}">Dalej</a></button>
+            {% endif %}
+        {% endif %}
     {% endfor %}
+
     <div class="content">
         <a href="{{ path('app_export')}}">Klikij aby wyeksportować dane do pliku csv. </a><br>
         <a href="{{ path('app_export_to_excel')}}">lub klikij aby wyeksportować dane do pliku Excela. </a><br>

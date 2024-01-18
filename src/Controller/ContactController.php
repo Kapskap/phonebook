@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Twig\Environment;
 
 
 class ContactController extends AbstractController
@@ -19,16 +21,36 @@ class ContactController extends AbstractController
     }
 
     //przeglądanie wielu rekordów
-    #[Route('/browse/{id}', name: 'browse_contact')]
-    public function browse(EntityManagerInterface $entityManager, int $id=null): Response
-    {
-        $contactRepository = $entityManager->getRepository(Contact::class);
-        //bez sortowania
-        $contact = $contactRepository->findAll();
-        //z sortowaniem
-        //$contact = $contactRepository->findBy([], ['Company' => 'ASC']);
+//    #[Route('/browse/{id}', name: 'browse_contact')]
+//    public function browse(EntityManagerInterface $entityManager, int $id=null): Response
+//    {
+//        $contactRepository = $entityManager->getRepository(Contact::class);
+//        //bez sortowania
+//        $contact = $contactRepository->findAll();
+//        //z sortowaniem
+//        //$contact = $contactRepository->findBy([], ['Company' => 'ASC']);
+//
+//        return $this->render('phone/browse.html.twig', ['contacts' => $contact]);
+//    }
 
-        return $this->render('phone/browse.html.twig', ['contacts' => $contact]);
+    #[Route('/browse/{id}', name: 'browse_contact')]
+    public function browse(Request $request, Environment $twig, ContactRepository $contactRepository,EntityManagerInterface $entityManager, int $id=null): Response
+    {
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $contactRepository->getCommentPaginator($offset);
+
+//        $contactRepository = $entityManager->getRepository(Contact::class);
+//        //bez sortowania
+//        $contact = $contactRepository->findAll();
+//        //z sortowaniem
+//        //$contact = $contactRepository->findBy([], ['Company' => 'ASC']);
+
+        return $this->render('phone/browse.html.twig',[
+                'contacts' => $paginator,
+                'previous' => $offset - ContactRepository::PAGINATOR_PER_PAGE,
+                'next' => min(count($paginator), $offset + ContactRepository::PAGINATOR_PER_PAGE),
+
+        ]);
     }
 
     //wyświetlanie 1 rekordu
