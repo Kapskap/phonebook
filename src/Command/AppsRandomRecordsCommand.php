@@ -63,9 +63,11 @@ class AppsRandomRecordsCommand extends Command
             $first_name = $first_names[array_rand($first_names)];
             $last_name = $last_names[array_rand($last_names)];
             $company = $companies[array_rand($companies)];
-//            $created_at = new \DateTimeImmutable(sprintf('-%d days', rand(1, 100)));
+            $created_at = new \DateTimeImmutable(sprintf('-%d days', rand(1, 100)));
+//            $created_at = '2024-01-16 20:20:20';
+//            dd($created_at);
 
-            $this->insertRecords->insertContact($first_name, $last_name, $company);
+            $this->insertRecords->insertContact($first_name, $last_name, $company, $created_at);
             $progressBar->advance();
         }
 

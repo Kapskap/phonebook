@@ -8,8 +8,8 @@ class ReadFile
     {
         $array = [];
         $file=fopen ($nameFile, "r");
-        if (!($file))
-        {
+
+        if ($file === NULL) {
             print 'błąd odczytu ';
         }
         else {
@@ -18,8 +18,9 @@ class ReadFile
                 $array[$i++] = fgets($file);
             }
         }
+
         fclose($file);
-        if ($array) return $array;
-        else return 0;
+
+        return $array;
     }
 }
