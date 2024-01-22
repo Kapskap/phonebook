@@ -2,9 +2,9 @@
 
 namespace App\Service;
 
-class ReadFile
+class FileService
 {
-    public function readTxt(string $nameFile): array
+    public function readFile(string $nameFile): array
     {
         $array = [];
         $file=fopen ($nameFile, "r");

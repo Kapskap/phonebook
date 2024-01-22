@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Service\InsertRecords;
-use App\Service\ReadFile;
+use App\Service\ContactService;
+use App\Service\FileService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,13 +15,13 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 #[AsCommand(
     name: 'apps:random-records',
-    description: 'Send to insert random value',
+    description: 'Insert random value to table contacs',
 )]
 class AppsRandomRecordsCommand extends Command
 {
 
     public function __construct(
-        private InsertRecords $insertRecords, private ReadFile $readFile)
+        private ContactService $contactService, private FileService $fileService)
     {
         parent::__construct();
     }
@@ -49,9 +49,9 @@ class AppsRandomRecordsCommand extends Command
         }
 
         //Odczyt "losowych" danych do tablic
-        $first_names = $this->readFile->readTxt("first_name.txt");
-        $last_names = $this->readFile->readTxt("last_name.txt");
-        $companies = $this->readFile->readTxt("company.txt");
+        $first_names = $this->fileService->readFile("first_name.txt");
+        $last_names = $this->fileService->readFile("last_name.txt");
+        $companies = $this->fileService->readFile("company.txt");
 
         $progressBar = new ProgressBar($output, $howMuch);
         $progressBar->setBarCharacter('<fg=green>=</>');
@@ -64,10 +64,8 @@ class AppsRandomRecordsCommand extends Command
             $last_name = $last_names[array_rand($last_names)];
             $company = $companies[array_rand($companies)];
             $created_at = new \DateTimeImmutable(sprintf('-%d days', rand(1, 100)));
-//            $created_at = '2024-01-16 20:20:20';
-//            dd($created_at);
 
-            $this->insertRecords->insertContact($first_name, $last_name, $company, $created_at);
+            $this->contactService->insertContact($first_name, $last_name, $company, $created_at);
             $progressBar->advance();
         }
 

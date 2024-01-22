@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Service\InsertRecords;
+use App\Service\ContactService;
 
 class ImportExportController extends AbstractController
 {
     #[Route('/import', name: 'app_import')]
-    function import(Request $request, InsertRecords $insertRecords)
+    function import(Request $request, ContactService $contactService)
     {
         $form = $this->createFormBuilder()
             ->add('submitFile', FileType::class, [
@@ -40,7 +40,7 @@ class ImportExportController extends AbstractController
                 // Przetwarzanie danych.
                 $created_at = new \DateTimeImmutable();
                 while (($data = fgetcsv($handle)) !== false) {
-                    $working = $insertRecords->insertContact($data[1], $data[2], $data[3], $created_at);
+                    $working = $contactService->insertContact($data[1], $data[2], $data[3], $created_at);
                 }
                 fclose($handle);
 

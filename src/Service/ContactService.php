@@ -4,7 +4,7 @@ namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-class InsertRecords
+class ContactService
 {
     private EntityManagerInterface $entityManager;
 
@@ -20,12 +20,13 @@ class InsertRecords
 
         $query = "INSERT INTO contact (first_name, last_name, company, created_at)
                     VALUES(:first_name, :last_name, :company, :created_at)";
+
         $stmt = $em->getConnection()->prepare($query);
         $r = $stmt->execute(array(
             'first_name' => $first_name,
             'last_name' => $last_name,
             'company' => $company,
-            'created_at' => $created_at->getTimestamp(),
+            'created_at' => $created_at->format('Y-m-d H:i:s'),
         ));
     }
 }
