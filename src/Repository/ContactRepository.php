@@ -18,7 +18,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class ContactRepository extends ServiceEntityRepository
 {
-    public const PAGINATOR_PER_PAGE = 25;
+//    public const PAGINATOR_PER_PAGE = 25;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -95,13 +95,14 @@ class ContactRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function getCommentPaginator(int $offset): Paginator
+    public function getCommentPaginator(int $offset, int $paginator_per_page): Paginator
     {
         $query = $this->createQueryBuilder('c')
 //            ->andWhere('c.contact = :contact')
 //            ->setParameter('contact', $contact)
 //            ->orderBy('c.createdAt', 'DESC')
-            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+//            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setMaxResults($paginator_per_page)
             ->setFirstResult($offset)
             ->getQuery()
         ;

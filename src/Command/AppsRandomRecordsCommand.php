@@ -49,8 +49,8 @@ class AppsRandomRecordsCommand extends Command
         }
 
         //Odczyt "losowych" danych do tablic
-        $first_names = $this->fileService->readFile("first_name.txt");
-        $last_names = $this->fileService->readFile("last_name.txt");
+        $firstNames = $this->fileService->readFile("first_name.txt");
+        $lastNames = $this->fileService->readFile("last_name.txt");
         $companies = $this->fileService->readFile("company.txt");
 
         $progressBar = new ProgressBar($output, $howMuch);
@@ -60,12 +60,12 @@ class AppsRandomRecordsCommand extends Command
         $progressBar->start();
 
         for($i=0;$i<$howMuch;$i++) {
-            $first_name = $first_names[array_rand($first_names)];
-            $last_name = $last_names[array_rand($last_names)];
+            $firstName = $firstNames[array_rand($firstNames)];
+            $lastName = $lastNames[array_rand($lastNames)];
             $company = $companies[array_rand($companies)];
-            $created_at = new \DateTimeImmutable(sprintf('-%d days', rand(1, 100)));
+            $createdAt = new \DateTimeImmutable(sprintf('-%d days', rand(1, 100)));
 
-            $this->contactService->insertContact($first_name, $last_name, $company, $created_at);
+            $this->contactService->insertContact($firstName, $lastName, $company, $createdAt);
             $progressBar->advance();
         }
 

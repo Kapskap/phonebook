@@ -14,7 +14,7 @@ class ContactService
     }
 
 
-    public function insertContact(string $first_name, string $last_name, string $company, \DateTimeImmutable $created_at)
+    public function insertContact(string $firstName, string $lastName, string $company, \DateTimeImmutable $createdAt)
     {
         $em = $this->entityManager;
 
@@ -23,10 +23,10 @@ class ContactService
 
         $stmt = $em->getConnection()->prepare($query);
         $r = $stmt->execute(array(
-            'first_name' => $first_name,
-            'last_name' => $last_name,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
             'company' => $company,
-            'created_at' => $created_at->format('Y-m-d H:i:s'),
+            'created_at' => $createdAt->format('Y-m-d H:i:s'),
         ));
     }
 }

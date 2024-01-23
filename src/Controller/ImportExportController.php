@@ -38,9 +38,9 @@ class ImportExportController extends AbstractController
             // Otwarcie pliku
             if (($handle = fopen($file->getPathname(), "r")) !== false) {
                 // Przetwarzanie danych.
-                $created_at = new \DateTimeImmutable();
+                $createdAt = new \DateTimeImmutable();
                 while (($data = fgetcsv($handle)) !== false) {
-                    $working = $contactService->insertContact($data[1], $data[2], $data[3], $created_at);
+                    $working = $contactService->insertContact($data[1], $data[2], $data[3], $createdAt);
                 }
                 fclose($handle);
 

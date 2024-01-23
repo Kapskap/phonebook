@@ -34,22 +34,19 @@ class ContactController extends AbstractController
 //    }
 
     #[Route('/browse/{id}', name: 'browse_contact')]
-    public function browse(Request $request, Environment $twig, ContactRepository $contactRepository,EntityManagerInterface $entityManager, int $id=null): Response
+    public function browse(Request $request, Environment $twig, ContactRepository $contactRepository, int $id=null): Response
     {
+        $paginator_per_page = 25;
         $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $contactRepository->getCommentPaginator($offset);
-
-//        $contactRepository = $entityManager->getRepository(Contact::class);
-//        //bez sortowania
-//        $contact = $contactRepository->findAll();
-//        //z sortowaniem
-//        //$contact = $contactRepository->findBy([], ['Company' => 'ASC']);
+        $paginator = $contactRepository->getCommentPaginator($offset, $paginator_per_page);
 
         return $this->render('phone/browse.html.twig',[
                 'contacts' => $paginator,
-                'previous' => $offset - ContactRepository::PAGINATOR_PER_PAGE,
-                'next' => min(count($paginator), $offset + ContactRepository::PAGINATOR_PER_PAGE),
-
+                'previous' => $offset - $paginator_per_page,
+                'next' => min(count($paginator), $offset + $paginator_per_page),
+//                'previous' => $offset - ContactRepository::PAGINATOR_PER_PAGE,
+//                'next' => min(count($paginator), $offset + ContactRepository::PAGINATOR_PER_PAGE),
+                'paginator_per_page' => $paginator_per_page,
         ]);
     }
 
