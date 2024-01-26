@@ -19,16 +19,18 @@
 
         {% if key == paginator_per_page-1 %}
             {% if previous >= 0 %}
-                <button style="margin-left: 70px;"><a href="{{ path('browse_contact', { id: contact.id, offset: previous }) }}">Wstecz</a></button>
+                <button style="margin-left: 70px;"><a href="{{ path('browse_contact', { id: contact.id, offset: previous, how: paginator_per_page }) }}">Wstecz</a></button>
             {% endif %}
-            <span style="margin-left: 100px;"><b>Strona {{ next/paginator_per_page }}
+            <span style="margin-left: 100px;"><b>Strona {{ (next/paginator_per_page)|round(0, 'floor') }}
                     z {{ (contacts|length/paginator_per_page)|round(0,'ceil') }}</b></span>
             {% if next < contacts|length %}
-               <button style="margin-left: 150px;"><a href="{{ path('browse_contact', { id: contact.id, offset: next }) }}">Dalej</a></button>
+               <button style="margin-left: 150px;"><a href="{{ path('browse_contact', { id: contact.id, offset: next, how: paginator_per_page }) }}">Dalej</a></button>
             {% endif %}
         {% endif %}
     {% endfor %}
 
+    <br>Podaj ilość danych na stronę:
+    {{ form(form) }}
     <div class="content">
         <a href="{{ path('app_export')}}">Klikij aby wyeksportować dane do pliku csv. </a><br>
         <a href="{{ path('app_export_to_excel')}}">lub klikij aby wyeksportować dane do pliku Excela. </a><br>

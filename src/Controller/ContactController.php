@@ -6,10 +6,14 @@ use App\Entity\Contact;
 use App\Repository\ContactRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Twig\Environment;
+
 
 
 class ContactController extends AbstractController
@@ -36,11 +40,36 @@ class ContactController extends AbstractController
     #[Route('/browse/{id}', name: 'browse_contact')]
     public function browse(Request $request, Environment $twig, ContactRepository $contactRepository, int $id=null): Response
     {
-        $paginator_per_page = 25;
+        $valueData = $request->query->getInt('how', 0);
+        if ($valueData == 0) {
+            $valueData = 25;
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('howMany', ChoiceType::class, [
+                'label' => ' ',
+                'choices' => [
+                    '10' => 10,
+                    '25' => 25,
+                    '50' => 50,
+                ],
+                'data' => $valueData,
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Zmień ilość'
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        $paginator_per_page = $form->get('howMany')->getData();
+
+//        $paginator_per_page = 25;
+
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $contactRepository->getCommentPaginator($offset, $paginator_per_page);
 
         return $this->render('phone/browse.html.twig',[
+                'form' => $form->createView(),
                 'contacts' => $paginator,
                 'previous' => $offset - $paginator_per_page,
                 'next' => min(count($paginator), $offset + $paginator_per_page),
