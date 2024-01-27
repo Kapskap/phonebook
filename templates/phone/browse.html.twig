@@ -14,20 +14,18 @@
             <div class="white">
         {% endif %}  
         <a href="{{ path('show_contact', {id: contact.id }) }}">
-            <strong> {{ contact.company }} </strong> {{ contact.firstName }}  {{ contact.lastName }}
-        </a></div><br>  
-
-        {% if key == paginator_per_page-1 %}
-            {% if previous >= 0 %}
-                <button style="margin-left: 70px;"><a href="{{ path('browse_contact', { id: contact.id, offset: previous, how: paginator_per_page }) }}">Wstecz</a></button>
-            {% endif %}
-            <span style="margin-left: 100px;"><b>Strona {{ (next/paginator_per_page)|round(0, 'floor') }}
-                    z {{ (contacts|length/paginator_per_page)|round(0,'ceil') }}</b></span>
-            {% if next < contacts|length %}
-               <button style="margin-left: 150px;"><a href="{{ path('browse_contact', { id: contact.id, offset: next, how: paginator_per_page }) }}">Dalej</a></button>
-            {% endif %}
-        {% endif %}
+            <strong> {{ contact.id }} </strong><strong> {{ contact.company }} </strong> {{ contact.firstName }}  {{ contact.lastName }}
+        </a></div><br>
     {% endfor %}
+
+    {% if previous >= 0 %}
+        <button style="margin-left: 70px;"><a href="{{ path('browse_contact', { id: contacts|last.id, offset: previous, how: paginator_per_page }) }}">Wstecz</a></button>
+    {% endif %}
+    <span style="margin-left: 100px;"><b>Strona {{ (next/paginator_per_page)|round(0, 'ceil') }}
+                    z {{ (contacts|length/paginator_per_page)|round(0,'ceil') }}</b></span>
+    {% if next < contacts|length %}
+        <button style="margin-left: 150px;"><a href="{{ path('browse_contact', { id: contacts|last.id, offset: next, how: paginator_per_page }) }}">Dalej</a></button>
+    {% endif %}
 
     <br>Podaj ilość danych na stronę:
     {{ form(form) }}
